@@ -1,0 +1,1240 @@
+\documentclass[11pt]{article}
+\usepackage{mathrsfs}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{fullpage}
+\usepackage{cancel}
+%\usepackage{txfonts} 
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem*{claim}{Claim}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem*{defn}{Definition}
+\newtheorem*{speccase}{Special Case}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+
+\newcommand{\A}{\mathscr{A}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\calS}{\mathcal{S}}
+
+%%%%%%%%%%%%%%%% New Commands %%%%%%%%%%%%%%%%
+
+\newcommand{\1}{\textbf{1}}
+\newcommand{\lle}{\lesssim}
+\def\norm#1{\| #1  \|}
+\newcommand\pnormint[2]{\left(\int |#1|^{#2}\right)^{1/#2}}
+\def\brac#1{\langle #1  \rangle}
+\newcommand{\BMO}{\textup{BMO}}
+
+
+%%%%%%%%%%%%%%%% Math Blackboard Letters %%%%%%%%%%%%%%%%%
+
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbE}{\mathbb{E}}
+
+\begin{document}
+
+{\noindent\Large Harmonic Analysis Exercises \hfill Dana Mendelson}
+\vspace{6mm}
+\subsection*{Lecture Notes I}
+\begin{enumerate}
+\item[5.11] Suppose that $f$ is analytic on the strip $\mathcal{S} := \{0 \leq \Re(z) \leq 1\}$, obeys sub-double-exponential bounds on the strip and polynomial bounds on the sides of the strip. Then $f$ obeys the same polynomial bound on the interior of the strip.
+\begin{proof}
+Consider $f(z)/(z-z_0)^c$ for $z_0 \not\in \mathcal{S}$ and $c$ sufficiently large. Then apply the three lines lemma.
+\end{proof}
+\item[6.1] If $f : \bbR^+ \to \bbR^+$ is monotone non-increasing function then
+\[
+\norm{f}_{L^{p,q}(X, \mu)} = \norm{f(t) t^{1/p} }_{L^q(\bbR^+, \frac{dt}{t})}.
+\]
+\begin{proof}
+Since $f$ can have only countably many jump discontinuities, we may, without loss of generality, replace $f$ by a right continuous function. Define the decreasing rearrangement of f by
+\[
+f^*(x) = \inf \{\lambda : \mu(\{x \in X: |f(x)| > \lambda\}) \leq t\}.
+\]
+This is the unique right-continuous decreasing function that is equimeasurable with $f$, hence here $f^*  = f$. Now using a change of variables
+\begin{align*}
+p \int_0^\infty \lambda^{q-1} \mu(\{ |f| > \lambda\})^{q/p} d\lambda &= q \int_0^\infty  \lambda^{q-1} \int_0^\infty \textbf{1}_{\{\mu( |f| > \lambda) \leq t\}} t^{q/p - 1} dt\; d\lambda.
+\end{align*}
+We interchange the order of summation and note that
+\[
+\int_0^\infty \lambda^{q-1} \textbf{1}_{\{\mu( |f| > \lambda) \leq t\}} d\lambda = \int_0^{f^*(t)} \lambda^{q-1} d\lambda = \frac{1}{q} f^*(t)^q
+\]
+to obtain the result.
+\end{proof}
+\item[6.10] (Dual Formulation of weak $L^p$). Let $1 < p \leq \infty$. Then for every $f \in L^{p, \infty}(X d\mu)$ we have
+\[
+\norm{f}_{L^{p, \infty}} \sim_p \sup\left\{ \mu(E)^{-1/p'} \left| \int f \textbf{1}_E d\mu \right| : 0 < \mu(E) < \infty\right\}.
+\]
+\begin{proof} 
+Let $\epsilon > 0$ and let $\lambda$ be such that
+\[
+\lambda \mu(\{|f| > \lambda \})^{1/p} > \norm{f}_{L^{p,\infty}} - \epsilon.
+\]
+Then with $E = \{|f| > \lambda \}$ we have
+\[
+\mu(E)^{-1/p'} \left| \int f \textbf{1}_E d\mu \right| \geq \mu(\{|f| > \lambda \})^{-1/p'} \lambda \left| \int_X \textbf{1}_E \right| = \lambda \,\mu(\{|f| > \lambda \})^{1/p} > \norm{f}_{L^{p,\infty}} - \epsilon,
+\]
+thus
+\[
+\norm{f}_{L^{p,\infty}} \leq \sup\left\{ \mu(E)^{-1/p'} \left| \int f \textbf{1}_E d\mu \right| : 0 < \mu(E) < \infty\right\}.
+\] 
+To obtain $\gtrsim_p$ part we estimate
+\[
+\mu(E)^{-1/p'} \left| \int f \textbf{1}_E d\mu \right| \leq \mu(E)^{-1/p'} \norm {f \textbf{1}_E }_{1,1}.
+\]
+By Holder's we have
+\[
+\mu(E)^{-1/p'} \norm{ f \textbf{1}_E }_{1,1} \lesssim_{p} \norm{f}_{p,\infty} \norm{\textbf{1}_E}_{p',1} \leq \norm{f}_{p,\infty}.
+\]
+Taking the supremum on the left yields the result.
+\end{proof}
+\item[8.1] Let $0 < p \leq \infty$, $1 < q \leq \infty$ and $A > 0$. Let $T$ be a sublinear operator such that the form
+\[
+\langle |Tf|, |g| \rangle := \int_Y |Tf||g| d \nu
+\]
+is well defined. Then the following are equivalent up to changes in the implied constant:
+\begin{itemize}
+\item T is restricted weak-type $(p,q)$ with constant $A$ in the sense that
+\[
+\|Tf\|_{L^{q,\infty}}(Y) \lesssim_{p,q} A H W^{1/p}
+\]
+for all simple sub-step function $f$ of height $H$ and width $W$.
+\item For all $E \subset X$, $F \subset Y$ of finite measure, we have the bound
+\[
+\langle |T\1_E|, \1_F \rangle \lesssim_{p,q} A \mu(E)^{1/p} \nu(F)^{1/q'}.
+\]
+\end{itemize}
+\begin{proof}
+Suppose the first item holds, then by Holder's inequality on Lorentz spaces we have
+\[
+\langle |T \1_E|, \1_F \rangle \leq \|T\1_E\|_{q, \infty} \|\1_F\|_{q',1} \lesssim_{p,q} A \mu(E)^{1/p} \nu(F)^{1/q'}.
+\]
+Conversely, suppose the second item holds. Then by the previous problem we can write
+\[
+\| T f \|_{L^{q,\infty}}  = \sup \left\{ \nu(F)^{-1/q'} \left| \int T f \textbf{1}_F d\nu \right| \right\}.
+\]
+In particular, by Remark 6.5 we can write $f = \sum_{k} 2^{-k} f_k$ where the $f_k$ are step functions of width $\leq W$, say with support on $W_k$. Thus by absolute convergence of this sum, we have
+\[
+\left| \int T f \textbf{1}_F d\nu \right| \leq H \sum_{k} 2^{-k} \int |T \1_{W_k}| |\1_F | d\nu \lesssim_{p,q} A H W^{1/p} \nu(F)^{1/q'}
+\]
+and the result follows.
+\end{proof}
+\item[Q1] Let $\| \cdot \|$ be a quasinorm on functions. Let $f_n$, $n =1, 2, \mathellipsis,N$ be a sequence of functions obeying the bounds 
+\[
+\norm{f_n} \lesssim 2^{-\epsilon n}
+\]
+for some $\epsilon > 0$. Then
+\[
+\norm{ \sum_{n=1}^N f_n } \lesssim_\epsilon 1 .
+\]
+\begin{proof}
+Let $C$ denote the implied constant in the triangle inequality. Let $K = \log C / \epsilon$. Since
+\begin{align*}
+\norm{ \sum_{n=1}^N f_n } &\leq C  \norm{ \sum_{n=1}^K f_n } + C^2 \norm{ \sum_{n= K + 1}^{2K} f_n } + \mathellipsis C^{N/K} \norm{ \sum_{n= lK + 1}^N f_n }\\
+& \lle C^K \left( C 2^{-\epsilon} + C^2 2^{-K \epsilon} + \mathellipsis + C^{N/K} 2^{- N \epsilon} \right)
+\end{align*}
+we may assume, without loss of generality, that $\epsilon > \log C$. Then
+\[
+\norm{ \sum_{n=1}^N f_n } \leq \sum_{n=1}^N \left(\frac{C}{2^\epsilon} \right)^n \lle_\epsilon 1. \qedhere 
+\]
+\end{proof}
+\item[Q2] Let $\| \cdot \|$ be a quasinorm (with implied constant in the quasitriangle inequality, as before) and let $f_n$ obey the bounds
+\[
+\norm{f_n} \lle n^{-A}
+\]
+for some $A > 0$. Then for $A$ sufficiently large (depending on the implicit constant in the quasitriangle inequality)
+\[
+\norm{ \sum_{n=1}^N f_n } \lesssim_A 1 .
+\]
+\begin{proof}
+We apply the quasitriangle inequality to write
+\[
+\norm{ \sum_{n=1}^N f_n } \lle  \norm{ \sum_{k =1}^ {\log N} \sum_{n=2^k}^{2^{k+1} -1} f_n } \leq C \sum_{k =1}^{\log N} (2^{(1-A)}C)^{k}  \lle \frac{ C^{\log N} 2^{(1-A) \log N} - 2^{1-A} C}{2^{1-A} C - 1}.
+\]
+Choosing $A > \log C + 1$ we have the desired inequality.
+\end{proof}
+\item[Q3] (Stein-Weiss inequality) Let $f_1, \ldots, f_N$, $N \geq 2$. Then
+\[
+\|f_1 + \ldots + f_N \|_{L^{1, \infty}} \lle \log N( \|f_1 \|_{L^{1,\infty}} + \ldots + \|f_N \|_{L^{1,\infty}}).
+\]
+\begin{proof}
+By rescaling $f_i \to \frac{1}{\lambda} f_i$ for each $\lambda > 0$ we see that it suffices to prove
+\[
+\mu( \{|f_1 + \ldots + f_N| > 1 \} ) \lle \log N( \norm{f_1}_{L^{1,\infty}} + \ldots + \norm{f_N }_{L^{1,\infty}})
+\]
+By the triangle inequality it suffices to prove the claim for non-negative $f$ and by rescaling 
+\[
+f_i \mapsto \frac{f_i}{\sup_i \norm{f_i}_\infty}
+\]
+we may assume $|f_i| \leq 1$. By the triangle inequality and homogeneity once again,
+\[
+\mu( \{|f_1 + \ldots + f_N| > \frac{1}{2} \} ) \leq \mu( \{|f_1| > 1/2N \} ) + \mu( \{|f_1 + \ldots + f_N| > (N-1)/2N \} )
+\]
+hence it suffices to consider the case where each $f_i \geq 1/2N$. Now by Remark 6.8, we note that for $f$ with $A \leq |f(x)| \leq AN$,
+\[
+\norm{f}_{p, q_1} \sim_{p,q} \log N \norm{f}_{p,q_2}.
+\]
+To see this, note that by Theorem 6.6, (iii) we can write $m$ as a sum of at most $\log(N)$ terms hence by Holder's inequality, we have for $q_1 > q_2$
+\[
+\norm{2^m \mu(E_m)^{1/p} }_{\ell^{q_1}} \leq \log N \norm{2^m \mu(E_m)^{1/p} }_{\ell^{q_2}}
+\]
+In particular, $\norm{f}_{1} = \norm{f}_{1,1} \leq \log N \norm{f}_{1,\infty}$, thus
+\[
+\norm{f_1}_{L^1} + \ldots + \norm{f_N }_{L^{1}} \leq \log N ( \norm{f_1 }_{L^{1,\infty}} + \ldots + \norm{f_N }_{L^{1,\infty}}),
+\]
+and by Chebyshev, 
+\[
+\norm{f_1 + \ldots + f_N }_{L^{1, \infty}} \leq  \norm{f_1 + \ldots + f_N }_{L^{1,1}} 
+\]
+which yields the result.
+\end{proof}
+%\item[Q4]
+%\item[Q5]
+\item[Q8] (Loomis-Whitney inequality). Let $d \geq 2$ and let $X_1, \ldots X_d$ be measure spaces and $f_i \in L^p( \prod_{j \neq i} X_j)$ for some $0 < p \leq \infty$. Then
+\[
+F(x_1, \mathellipsis, x_d) : =\prod_{i=1}^d f_i(x_1,\ldots,x_{i-1}, x_{i+1}, \ldots, x_d)
+\]
+lies in $L^{p/(d-1)} ( \prod X_i)$ with the Loomis-Whitney inequality
+\[
+\norm{F}_{L^{p/(d-1)}(\prod X_i)} \leq \prod_{i=1}^d \norm{f_i}_{L^p (\prod_{j \neq i} X_j)}.
+\]
+\begin{proof}
+We begin by computing
+\[
+\int_{x_1} |F|^{p/(n-1)} = |f_1|^{p/(n-1)} \int_{x_1} |f_2|^{p/(n-1)} \ldots |f_d|^{p/(n-1)}
+\]
+we apply Holder's inequality to obtain
+\[
+\int_{x_1} |F|^{p/(n-1)} \leq |f_1|^{p/(n-1)} \left( \int_{x_1} |f_2|^{p} \right)^{1/(n-1)} \ldots \left(\int_{x_1} |f_d|^{p} \right)^{1/(n-1)}.
+\]
+Now integrate with respect to $x_2$ to obtain and apply Holder's once more to obtain
+\[
+\int_{x_2} \int_{x_1} |F|^{p/(n-1)} \leq \left(\int_{x_2} |f_1|^{p} \right)^{1/(n-1)} \left( \int_{x_1} |f_2|^{p} \right)^{1/(n-1)} \ldots \left(\int_{x_2} \int_{x_1} |f_d|^{p} \right)^{1/(n-1)}.
+\]
+Proceeding in such a manner we obtain
+\[
+\int_{x_d} \ldots \int_{x_2} \int_{x_1} |F|^{p/(n-1)} \leq \left(\int_{\widehat{x_1}} |f_1|^{p} \right)^{1/(n-1)} \left( \int_{\widehat{x_2}} |f_2|^{p} \right)^{1/(n-1)} \ldots \left( \int_{\widehat{x_d}}|f_d|^{p} \right)^{1/(n-1)}.
+\]
+where $\widehat{x_i}$ denotes the domain $\prod_{j \neq i} X_j$. Taking both sides to $(n-1)/p$ we obtain the desired result.
+\end{proof}
+Take now $X_i = \bbR$ with $\mu$ the Lebesgue measure and let $E \subset \bbR^d$. Let $f_i = \pi_i(E) = \partial E$, then in particular, the Loomis-Whitney inequality implies the weak isoperimetric inequality, namely,
+\[
+|E| \lle_d |\partial E|^{d/(d-1)}.
+\]
+\end{enumerate}
+\subsection*{Lecture Notes II}
+\begin{enumerate}
+\item[4.2] Let $1 \leq q < p < \infty$, and suppose that $\norm{f}_{L^p_x L^q_y} = \norm{f}_{L^q_y L^p_x}$. Then $|f|$ is a tensor product.
+\begin{proof}
+We wish to show that equality occurs in
+\[
+\left( \int_X \left( \int_Y |f(x,y)|^q dy \right)^{p/q} \right)^{q/p} \leq \int_Y \left( \int_X |f(x,y)|^p dx \right)^{q/p} dy 
+\]
+if and only if $|f(x,y)| = f_x(x) f_y(y)$ for $f_y$ and $f_x$ in $L^q_y$, $L^p_x$, respectively.
+Define
+\[
+H(x):= \int_Y |f(x,y)|^q dy,
+\]
+then
+\[
+\int_X H(x)^{p/q} dx = \int_X H(x)^{p/q - 1} \left(\int_Y |f(x,y)|^q dy\right) dx = \int_Y  \left(\int_X H(x)^{p/q - 1}|f(x,y)|^q dx\right) dY.
+\]
+Apply H\"older's inequality to the RHS to obtain
+\[
+\int_X H(x)^{p/q} dx \leq \int_Y \left( \int_X H(x)^{p/q} dx \right)^{\frac{p-q}{p}} \left( \int_X |f(x,y)|^p dx\right)^{q/p} dy.
+\]
+and we obtain the result by dividing both sides by 
+\[
+\left( \int_X H(x)^{p/q} dx \right)^{\frac{p-q}{p}}.
+\]
+Thus equality in norm interchange occurs if and only if equality holds in H\"older's, which occurs if and only if there exists $\lambda(y)$ so that
+\[
+\lambda(y) H(x)^{p/q - 1} = |f(x,y)|^q
+\]
+
+and by assumption $\lambda(y)$ and $H(x)^{p/q - 1}$ are in $L_x^{p/q}$ and $L_y^1$, respectively.
+\end{proof}
+\item[5.8] We claim that the hypotheses of Schur's test cannot be used to deduce a strong type $(p,q)$ bound on $T$ when $p \neq q$.
+\begin{proof}
+Suppose the hypotheses of Schur's test allowed on to deduce such bounds, namely
+\[
+\norm{T_K f}_{L^q(Y)} \leq A^{1/p'} B^{1/q} \norm{f}_{L^p}.
+\]
+By multiplying $K$ by a positive constant, $C$, we see that this imposes the requirement
+\[
+C \norm{T_K f}_{L^q(Y)} \leq C^{\frac{1}{p'} + \frac{1}{q}} A^{1/p'} B^{1/q} \norm{f}_{L^p(X)}
+\]
+for all $C > 0$, that is, $p = q$.
+\end{proof}
+\item[6.2] (Generalised Young's inequality). Let $1 \leq p,q,r \leq \infty$ be such that $\frac{1}{p} + \frac{1}{r} = \frac{1}{q} + 1$, and supposed that $K: X \times Y \to \bbC$ obeys the bounds
+\[
+\norm{K(\cdot,y)}_{L^r(X)} \leq A, \quad a.e.\; y \in Y
+\]
+and
+\[
+\norm{K(x,\cdot)}_{L^r(Y)} \leq A, \quad a.e.\; x \in X
+\]
+for some $A > 0$. Then $T_K$ is of strong-type $(p,q)$ with norm at most $A$.
+\begin{proof}
+By splitting $K$ we may assume $K$ is real and non-negative. Similarly for the functions $f$. By multiplying $K$ by a constant we may assume $A =1$. By Proposition 5.2, we have that $T_K$ is strong-type $(1,r)$ and
+\[
+\norm{T_K}_{L^1(X) \to L^r(Y)} \leq \sup_{x \in X} \norm{K(x, \cdot)}_{L^q(Y)} \leq A.
+\]
+Further, by Proposition 5.4, $T_K$ is of strong type $(r',\infty)$ with bounds
+\[
+\norm{T_K}_{L^{r'}(X) \to L^\infty(Y)} \leq \sup_{x \in X} \norm{K(x, \cdot)}_{L^r(Y)} \leq A.
+\]
+Hence by Riesz-Thorin complex interpolation, we have
+\[
+\norm{T_{K}}_{L^{q}(Y)} \leq A \norm{f}_{L^p}
+\]
+for any $p,q$ with $\frac{1}{p} + \frac{1}{r} = \frac{1}{q} + 1$.
+\end{proof}
+\item[6.10] If $1 \leq p \leq \infty$, $f \in L^p$, $g \in L^{p'}$, then $f*g$ is continuous and decays to zero at infinity.
+\begin{proof}
+We can approximate $f, g$ by $f_\epsilon$, $g_\epsilon \in C_c^\infty$ in the $L^p$, $L^{p'}$ norms with the bound
+\[
+|f * g (x) - f_\epsilon * g_ \epsilon (x)|  \leq \norm{f}_p \norm{  g - g_\epsilon }_{p'} + \norm{g}_{p'} \norm{f-f_\epsilon}_{p}.
+\]
+Hence $f*g$ is uniformly approximated by continuous functions, hence continuous. Moreover, given $\epsilon > 0$, let $f_\epsilon * g_\epsilon$ be such that
+\[
+|f * g (x) - f_\epsilon * g_ \epsilon (x)|  < \epsilon
+\]
+for all $x$. Thus the statement about decay at infinity follows from the fact that $f_\epsilon * g_\epsilon$ vanish outside a compact set.
+\end{proof}
+\item[7.1] Up to constant multiplication, the Fourier transform $\mathcal{F}$ is the only continuous map from Schwartz space to itselt which obeys the translation and modulation symmetries.
+\begin{proof}
+Suppose we have some other operator $T$ which obeys those same symmetries. Then $A:= T \mathcal{F}^{*}$ is an operator that commutes with both differentiation and multiplication by polynomials. From Differential Analysis question 6.6.2 (using Hadamard's lemma) we have that any such function must be a constant multiple of the identity, $CI$. (We write
+\[
+(Af) (x) = Af(y) + \sum_{j=1}^n (x_i - y_j) Af_j(x) = f(y) A1 + \sum_{j=1}^n (x_i - y_j) Af_j(x)
+\]
+and evaluate at $y$). Hence $T^{-1} = C \mathcal{F}^*$ and the result follows.
+\end{proof}
+\item[Q1] Suppose that $K : X \times Y \to \bbC$ obeys the bounds
+\[
+\int_X |K(x,y)| w_X(x) d\mu_X (x) \leq A w_Y(y), \quad a.e.\;y \in Y
+\]
+and
+\[
+\int_Y |K(x,y)| w_Y(y) d\mu_Y (y) \leq B w_X(x), \quad a.e.\;x \in X
+\]
+for some $0<A, B<\infty$ and some stricly positive weight functions. Then $T_K$ is bounded from $L^2(X) \to L^2(Y)$ with 
+\[
+\norm{T_K}_{L^2 \to L^2} \leq \sqrt{AB}.
+\]
+\begin{proof}
+We normalize $A = B = 1$. By duality and monotone convergence, it suffices to show
+\[
+\int_X \int_Y |K(x,y)| |f(x)| |g(y)| d\mu_X d\mu_Y \leq \norm{f}_{L^2(X)} \norm{g}_{L^2(Y)}.
+\]
+We write
+\[
+\int_X \int_Y |K(x,y)| |f(x)| |g(y)| d\mu_X d\mu_Y = \int_X \int_Y   |K(x,y)| \sqrt{\frac{w_Y(y)}{w_X(x)}} |f(x)| \sqrt{\frac{w_X(x)}{w_Y(y)}} |g(y)| d\mu_X d\mu_Y
+\]
+and we estimate the RHS Using Holder's inequality to obtain
+\begin{align*}
+\left( \int_X \int_Y   |K(x,y)| \frac{w_Y(y)}{w_X(x)} |f(x)|^2 d\mu_X d\mu_Y \right)^{1/2} \left(\int_X \int_Y \frac{w_X(x)}{w_Y(y)} |g(y)^2|  d\mu_X d\mu_Y \right)^{1/2}.
+\end{align*}
+Integrating first with respect to $y$ in the left term (and $x$ in the right) we obtain the desired result.
+\end{proof}
+%\item[Q4]
+\item[Q5] (Hardy inequality I) Let $\bbR^+$ be given Lebesdue measure $dx$. Then
+\[
+\norm{ \frac{1}{x} \int_0^x f(t) \,dt }_{L^p_x(\bbR^+)} \lle_p \norm{f}_{L^p}
+\]
+for all $1 < p \leq \infty$ and $f \in L^p$.
+\begin{proof}
+For $p= \infty$ the claim is obvious so suppose $1 < p < \infty$. By density, we may assume that $f \in C_c^\infty$ and by the triangle inequality, we may assume $f$ is non-negative. Define
+\[
+F(x) := \frac{1}{x} \int_0^x f(t) dt. 
+\]
+Then $(x F(x))' = f(x)$ and hence
+\[
+\int_0^\alpha F(t)^p dt = p \int_0^\alpha t F(t)^{p-1} F'(t) dt = p \int_0^\alpha F(t)^{p-1} ( F(t) - f(t)).
+\]
+By H\"older's inequality we have
+\[
+(1 - p) \int_0^\alpha F(t)^p  \leq p \left(\int_0^\alpha F(t)^{p} \right)^{1-1/p} \left(\int_0^\alpha f(t)^p\right)^{1/p},
+\]
+and taking $\alpha \to \infty$, using that $f \in L^p$, yields the result.
+\end{proof}
+Alternate approach:
+\begin{proof}
+Define
+\[
+Tf (x) = \frac{1}{x} \int_0^x f(t) dt.
+\]
+Since $T$ is obviously bounded on $L^\infty$ it suffices by Marcinkiewicz and triangle inequality to prove the weak-type $(1,1)$ inequality for a non-negative function with compact support. By homogeneity we may assume $|f| \leq 1$. Let $E(\lambda) = \{x \in \bbR^+ : Tf(x) > \lambda\}$, then by construction
+\[
+\mu(E(\lambda)) \leq \frac{1}{\lambda} \int_{E(\lambda)} f(x) \;dx 
+\]
+hence
+\[
+\sup_{\lambda > 0} \lambda \mu(E(\lambda)) \leq \int_{E(\lambda)} f(x) \leq \norm{f}_{L^1},
+\]
+which concludes the proof.
+\end{proof}
+\item[Q8] Let $d \geq 1$, $1 \leq p,q \leq \infty$ be such that $\frac{1}{p'} + \frac{1}{q'} \geq 1$ and let $f \in L^p$ and $g \in L^q$. Let $\alpha, \beta \in \bbR$ obey the scaling condition
+\[
+\alpha + \beta = -\frac{d}{p'} - \frac{d}{q'}.
+\]
+If $\alpha > - \frac{n}{p'}$ then
+\[
+\int \int_{|x| \lle |y|} |x|^\alpha |y|^\beta |f(x)| |g(y)| dx dy \lle_{\alpha,\beta,p,q} \norm{f}_p \norm{g}_q
+\]
+and similarly when $\alpha < - \frac{n}{p'}$.
+\begin{proof}
+We write $\alpha =  - \frac{n}{p'} + \epsilon$ and by the scaling condition obtain $\beta =  - \frac{n}{q'} - \epsilon$. We consider first the contribution when $|y| \lle 1$ and $|x| \lle 1$. Since $|x| \lle y$ we can find $c < 1$ such that $|x|^{c\epsilon} \lle |y|^{\epsilon + \epsilon_1}$, for some $\epsilon_1 > 0$. Then
+\begin{align*}
+\int \int_{|x| \lle |y|} |x|^\alpha |y|^\beta |f(x)| |g(y)| dx dy \lle \int_0^1 \int_0^1 |x|^{- \frac{n}{p'} + (1-c)\epsilon} |y|^{- \frac{n}{q'} + \epsilon_1} |f(x)| |g(y)| dx dy
+\end{align*}
+and we apply H\"older's to conclude. The other cases follow similarly.
+\end{proof}
+%\item[Q9] (Weighted one-dimensional Hardy-Littlewood-Sobolev) Let $1 \leq p,q \leq \infty$, $0 < s < 1$ and $\alpha, \beta \in\bbR$ obey the conditions
+%\[
+%\alpha > - \frac{1}{p'}
+%\]
+%\[
+%\beta > - \frac{1}{q'}
+%\]
+%\[
+%1 \leq \frac{1}{p} + \frac{1}{q} \leq 1 + s
+%\]
+%and the scaling condition
+%\[
+%\alpha + \beta -1 + s = -\frac{n}{p'} - \frac{n}{q'}
+%\]
+%with at most one of the equalities
+%\[
+%p=1, \; p=\infty,\;q = 1,\; q = \infty,\; \frac{1}{p} + \frac{1}{q} = 1 + s
+%\]
+%holding. Let $f \in L^p(\bbR)$ and $g \in L^q(\bbR)$. Then
+%\[
+%\int_{\bbR} \int_{\bbR} \frac{|x|^\alpha |y|^\beta}{|x - y|^{1-s}} |f(x) | |g(y)| dxdy \lle_{\alpha,\beta,p,q} \norm{f}_{L^p} \norm{g}_{L^q}
+%\]
+%\begin{proof}
+%Let
+%\[
+%K(x,y) := |x|^\alpha |x-y|^{s-1} |y|^\beta
+%\]
+%and define 
+%\[
+%T_K f(y) = \int \frac{|x|^\alpha |y|^\beta}{|x - y|^{1-s}} |f(x)| dx.
+%\]
+%Then to prove the claim it suffices by duality to show that $T_K$ is of strong-type $(p,q')$. 
+%\end{proof}
+\item[Q12] (Littlewood's principle). Let $1\leq q < p \leq \infty$, and suppose that $T: L^p \to L^q$ is a bounded operators which commuts with translations. Then $T \equiv 0$.
+\begin{proof}
+Suppose $T \not \equiv 0$. Then there is some $f \in L^p$ such that $Tf \neq 0$. If $p < \infty$ then
+\[
+\lim_{h \to \infty} \norm{f - \textup{Trans}_h f}_{p} = 2^{1/p} \norm{f}_p,
+\]
+and the same holds if $f \in L_0^\infty$. Now,
+\[
+\norm{Tf}_q = 2^{-1/q} \lim_{h \to \infty} \norm{Tf - \textup{Trans}_h Tf}_{q} \leq 2^{1/p-1/q} \norm{T}  \norm{f}_p,
+\]
+which is impossible if $p > q$ since this contradicts the definition of $\norm{T}$ as the best possible constant (unless $\norm{T} = 0$).
+\end{proof}
+\item[Q14]
+Suppose $T$ is a continuous linear operator from $L^p \to L^p$ for some $1 \leq p \leq \infty$. Let $E_1 \subset \ldots E_N$ be a nested sequence of sets in $X$ for some $N > 1$, and let $T_*$ be the maximal operator
+\[
+T_* f(y) := \sup_{1 \leq n \leq N} |T(f\1_{E_n})|.
+\]
+Then $\norm{T_*}_{L^p \to L^p} \lle \log N \;\norm{T}_{L^p \to L^p}$.
+\begin{proof}
+We normalize so that $\norm{T}_{L^p \to L^p} = \norm{f}_p = 1$ and by adding in dummy indices if necessary, we may assume $E_N = X$ and $E_0 = \varnothing$. Further, by adding additional (uncountably many) sets, we may assume that the function
+\[
+\alpha \mapsto \norm{f\1_{E_\alpha} }
+\]
+is continuous. We proceed according to the following algorithm:
+
+First, let $E_{1,1}$ and be the largest index such that
+\[
+\norm{f \1_{E_{1,1}} }_{L^p}^p \leq \frac{1}{2}
+\] 
+This is possible since $\norm{f\1_{E_n}}$ increases from $0$ to $1$. Now let $E_{1,2}, E_{3,2}$ be the sets with smallest (or largest) index such that
+\[
+\norm{f \1_{E_{1,2}} }_{L^p}^p \leq \frac{1}{4}, \quad \norm{f \1_{E_{3,2}} }_{L^p}^p \leq \frac{3}{4}
+\]
+In such a way, for $m = 1, \ldots, \log N$ and $j_m = 1, \ldots, 2^{m-1}$ to be the numbers coprime to $2$. (Dropping subscripts) we define $(j,m)$ to be such that
+\[
+\norm{f \1_{E_{j,m}} }_{L^p}^p \leq \frac{j_m}{2^m}
+\]
+and we let $f_{j,m} = f\1_{X_{j,m}}$ with $X_{j,m} = E_{j,m} \backslash E_{j-1,m}$.
+Then
+\[
+\norm{f \1_{X_{j,m}} }_{p}^p \leq \frac{1}{2^{m-1}}, \quad \textup{and} \quad f\1_{E_n} =\sum_{m=1}^{\log N} \sum_{j_m=1}^{2^{m-1}} f_{j,m}
+\]
+Thus
+\[
+T_* f \leq \sum_{m=1}^{\log N} \sup_{1 \leq j \leq 2^{m-1}} |T(f_{j,m})| \leq \sum_{m=1}^{\log N} \left(\sum_{j=1}^{2^{m-1}} |T(f_{j,m})|^p \right)^{1/p}.
+\]
+Now
+\[
+\int \sum_{j=1}^{2^{m-1}} |T(f\1_{j,m})|^p \leq \sum_{j=1}^{2^{m-1}}  \frac{\norm{T}}{2^{m-1}} = 1.
+\]
+Hence
+\[
+\norm{T_* f }^p_{L^p} \lle \sum_{m=1}^{\log N} \sum_{j=1}^{2^{m-1}} \norm{T(f_{j,m})}_{L^p}^p = \log N
+\]
+\end{proof}
+\item[Q15] (Radamacher-Menshov inequality). Let $f_1, \ldots, f_N$ be an orthonormal set of functions in $L^2(X)$ for some $N > 1$.
+\begin{claim}
+\[
+\norm{\sup_n |\sum_{m=1}^n f_m|}_{L^2(X)} \lle N^{1/2} \log N
+\]
+\end{claim}
+\begin{proof}
+Let $T: \ell^2(\{1, \ldots, N\}) \to L^2(X)$ be defined by
+\[
+T((\alpha_m)) := \sum_{m=1}^N \alpha_m f_m.
+\]
+Let $E_n:=\textup{span}\{f_1, \ldots, f_n\}$ and let $x = (1, \ldots, 1)$. In the notation of the previous problem that 
+\[
+T_*f(y) := \sup_{1 \leq n \leq N} |\sum_{m=1}^n f_m|
+\]
+hence by the previous problem we have
+\[
+\norm{\sup_{1 \leq n \leq N} |\sum_{m=1}^n f_m|}_{L^2} \lle \log N \norm{T} \norm{(\alpha_m)}_{\ell^2} = N^{1/2} \log N \norm{T}
+\]
+and one can check that $\norm{T} \leq 1$, proving the claim.
+\end{proof}
+\end{enumerate}
+\subsection*{Lecture Notes III}
+\begin{enumerate}
+\item[Q1] (Remarks on the maximal inequality for dyadic functions vs. Doob's inequality).
+\item[Q5](Hedberg's inequality). Let $1 \leq p < \infty$, $0 < \alpha < d/p$ and let $f$ be locally integrable on $\bbR^d$. Then
+\[
+\int_{\bbR^d} \frac{|f(y)|}{|x-y|^{d-\alpha}} dy \lle_{d,\alpha,p} \norm{f}_p^{\alpha p /d} (Mf(x))^{1- \alpha p /d}.
+\]
+\begin{proof}
+Let $r > 0$, then
+\[
+\int_{\bbR^d} \frac{|f(y)|}{|x-y|^{d-\alpha}} dy = \int_{|x-y| < s} \frac{|f(y)|}{|x-y|^{d-\alpha}} dy + \int_{|x-y| > s} \frac{|f(y)|}{|x-y|^{d-\alpha}} dy := I + II.
+\]
+Let $I_{k,s} :=\{2^{-k-1} s <|x-y| < 2^{-k} s\}$. For the first term, we can estimate
+\begin{align*}
+I = \sum_{k=0}^\infty \int_{I_{k,s}} \frac{|f(y)|}{|x-y|^{d-\alpha}} dy &\leq \sum_{k=0}^\infty \int_{I_{k,s}} 2^{(d-\alpha)(k+1)} s^{-d + \alpha} dy |f(y)| \\
+&\lle 2^{d-\alpha} \sum_{k=1}^\infty 2^{-k\alpha} \frac{1}{(2^{-k+1} s)^n} \int_{B_x(2^{-k+1}s)} |f(y)|\\
+& \lle s^\alpha Mf(x).
+\end{align*}
+For the second piece, we have
+\[
+II \lle \norm{f}_p \left(\int_{|w| > s} \frac{dw}{|w|^{p'(d-\alpha)}}\right)^{1/p'} \lle s^{(d-\alpha) - n/p'}\norm{f}_p.
+\]
+Minimizing over $s > 0$, we obtain the desired result.
+\end{proof}
+\item[Q6] Let $f \in L^1_{\textup{loc}}(\bbR^d)$. Then almost every $x \in \bbR^d$ is a Lebesgue point and for $c$ such that
+\[
+\lim_{r \to 0} \frac{1}{|B|}\int_{B(x,r)} |f(y) - c| \; dy =0
+\]
+we have $c = f(x)$.
+\begin{proof}
+This follows from the Lebesgue differentiation theorem and uniqueness of $L^1$ limits.
+\end{proof}
+\item[Q7] (Fundamental theorem of calculus) Let $f: \bbR \to \bbC$ be locally integrable and let $F(x) := \int_0^x f(y) dy$. Then $F$ is differentiable at every Lebesgue point of $f$ and $F' = f$ almost everywhere.
+\begin{proof}
+By taking a difference quotient, we see that
+\[
+F(x+h) - F(x) = \frac{1}{h} \int_x^{x+h} f(y) dy \to f(x)
+\]
+as $h \to 0$ by the Lebesgue differentiation theorem.
+\end{proof}
+\item[Q11] (Fatou's theorem) Let $f \in H^p(\mathcal{D})$ for some $1 < p \leq \infty$ and let $f_1$. Then for almost every $\theta \in \bbR \backslash \bbZ$ we have
+\[
+\lim_{n \to \infty} f(z_n) = f_1(\theta)
+\]
+\item[Q12] Let $f \in L^1(\bbR^d)$ and let $B$ be a ball such that $Mf \geq \lambda$ at every point of $B$. Show that $Mf \gtrsim_d \lambda$ at every point of $2B$.
+\begin{proof}
+Let $x \in 2B$ and let $B_x$ be such that $B \subset B_x$. Then $|B| \lesssim_d |B_x|$ and
+\[
+Mf(x) \geq \frac{1}{|B_x|} \int_{B_x} f(u) du \geq \frac{|B|}{|B_x|} \frac{1}{|B|}\int_{B} f(u) du \gtrsim_d \frac{1}{|B|}\int_{B} f(u) du
+\]
+\end{proof}
+\end{enumerate}
+\subsection*{Lecture Notes IV}
+\begin{enumerate}
+\item[Q2] Let $T$ and $T'$ be two CZOs with the same kernel $K$. Then there exists a bounded function $b \in L^\infty$ such that $Tf = T'f + bf$ for all $f \in L^2(\bbR^d)$.
+\begin{proof}
+By considering $T - T'$ we may take $T' = 0$ and $K = 0$. Then
+\[
+\mu(E) := \langle T\1_E, 1_E \rangle
+\]
+is a measure which is absolutely continuous with respect to Lebesgue measure. Indeed if $\lambda(E) = 0$, then $\1_E = 0$ almost everywhere and it follows that $\mu(E) = 0$. Hence, by the Radon-Nikodym theorem, there exists measurable $b$ such that
+\[
+\mu(E) = \int_E b \,d\lambda
+\]
+hence
+\[
+\int_E b \1_E d\lambda = \int_E T\1_E d\lambda.
+\]
+Finally, since this equality holds for any measurable $E$, $T \1_E = b\1_E$ almost surely. The equality for general $f$ follows by linearity and continuity. Finally, boundedness of $b$ follows from the inequality
+\[
+\norm{b}_\infty \norm{f}_p = \norm{T f}_p
+\]
+and the fact that CZOs are strong type $(p,p)$.
+\end{proof}
+\item[Q4](Lacunary exponential sums lie in BMO). Let $(\xi_n)$ be a sequence of non-zero frequencies in $\bbR$ which are lacunary. The $(c_n)$ be a sequence of complex numbers obeying the $\ell^2$ bound $\sum c_n \lle 1$. Further, suppose that only finitely many of the $c_n$ are non-zero. Let $f: \bbR \to \bbC$ be the exponential sum
+\[
+f(x) := \sum c_n e^{2 \pi i \xi_n x}.
+\]
+If $I$ is an interval in $\bbR$ and $\phi_I: \bbR \to \bbR$ is a bump function adapted to $I$, then
+\[
+\int \phi_I|f(x) - c_I|^2 dx \lle |I|,
+\]
+for some constant $c_I$.
+\begin{proof}
+Let $N$ be the smallest index such that $2^n \geq |I|^{-1}$, then define
+\[
+f_1:= \sum_{n =1}^{N-1} c_n e^{2 \pi i \xi_n x}
+\]
+and
+\[
+f_2:=\sum_{n=N}^\infty c_n e^{2 \pi i \xi_n x}
+\]
+and write
+\[
+\int \phi_I|f(x) - c_I|^2 dx \leq \int \phi_I|f_1 - c_I|^2 dx  + \int \phi_I|f_2 - c_I|^2 dx := (1) + (2).
+\]
+First we treat $(2)$. Here we have
+\[
+\int \phi_I|f_1 - c_I|^2 dx \lle \sum_{n=N}^\infty  c_n^2 \;|\int \phi_I e^{2 \pi i \xi_n x}|^2 dx \sim \sum_{n=N}^\infty  c_n^2 |\hat{\phi}_I|^2 \lle \frac{1}{\xi_{N}} \sum c_n^2 \sim|I|,
+\]
+since $\phi_I$ is smooth. For $I$, let $I = (a,b)$ and let $c_I = \sum_{n =1}^{N-1} c_n e^{2 \pi i \xi_n a}$. Then
+\[
+\int \phi_I|f_1 - c_I|^2 dx = \int \phi_I \sum_{n=1}^{N-1}|c_n|^2|e^{2 \pi i \xi_n x} - e^{2 \pi i \xi_n a}|^2 dx \lle \sum_{n=1}^{N-1} |\xi_{N-1}|^2|c_n|^2 \int |x-a|^2 .
+\]
+Thus
+\[
+(1) \lle  |b-a|^3 |I|^{-2} = |I|.
+\]
+By the alternate characterization of the BMO norm, $L^p$ version, it follows that $\norm{f}_{BMO} \lle 1$.
+\end{proof}
+\item[Q8](Sharp function, I) For any locally integrable function $f:\bbR^d \to \bbC$, define the function $f^\sharp$ as
+\[
+f^\sharp(x) := \sup B \frac{1}{|B|} \int_B \left|f - \frac{1}{|B|} \int_{B} f \right|,
+\]
+where the supremum ranges over all balls containing $x$.
+\begin{claim}
+\[
+|f^\sharp| \lle_d Mf.
+\]
+\end{claim}
+\begin{proof}
+Up to a constant depending on $d$, we may take a supremum over balls of radius $r > 0$. The inequality is then immediate.
+\end{proof}
+\item[Q9] (Sharp function, II) Let $f$ be locally integrable, let $\epsilon, \lambda > 0$, and let $B$ be any ball on which $Mf(x) \lle \lambda$ for at least one $x \in B$, and such that $f^\sharp(y) \leq \epsilon \lambda$ for at least one $y \in B$.
+\begin{claim}
+For sufficiently large $K \gg 1$,
+\[
+|\{x \in B : Mf \geq K\lambda \}| \lle_d \frac{\epsilon}{K} |B|.
+\]
+\end{claim}
+\begin{proof}
+First we claim that for $K \gg 1$,
+\[
+|\{x \in B : Mf \geq K\lambda \}| \subseteq |\{x \in B : M((f - f_{B'})\1_B) \geq K' \lambda \}|
+\]
+for some $B' \supset B$ and $K < K'$. Let $c = \frac{|B|}{|B'|} > 1$. Then $f_{B} \leq c f_{B'}$ and
+\[
+M((f - f_{B'})\1_B) \geq \frac{1}{|B|} \int_B |f| - f_{B'} \geq \left(1 - c \right) f_B.
+\]
+Taking the supremum on the right yields the containment 
+\[
+|\{x \in B : Mf \geq K\lambda \}| \subseteq |\{x \in B : Mf \geq \left(1 - c \right)  K \lambda \}|.
+\]
+hence if $K \geq 1/(1-c)$, we're all set. By the Hardy-Littlewood maximal inequality, we have
+\[
+|\{x \in B : M((f - f_{B'})\1_B) \geq K\lambda \}| \lle_d \frac{1}{K\lambda} \int_B |f - f_B| dx
+\]
+and thus
+\[
+|\{x \in B : Mf \geq K\lambda \}| \lle_d \frac{|B|}{K\lambda} f^\sharp(y)
+\]
+taking infimum over $y \in B$, and using the hypothesis, we obtain the result.
+\end{proof}
+\begin{claim}
+The good $\lambda$ inequality holds, namely
+\[
+|\{Mf \geq K\lambda \textup{ and } f^\sharp \leq \epsilon \lambda \} | \lle_d \frac{\epsilon}{K} |\{ Mf \geq \lambda\}|
+\]
+\begin{proof}
+We may assume the right hand side (denote it by $E_\lambda$) has finite measure, otherwise there is nothing to prove. Cover $E_\lambda$ by balls $B \in\mathcal{B} \subset 100 \{ Mf \geq \lambda \}$ and by the Vitali covering theorem, we can extract a finite subcover $B_j$ such that 
+\[
+\bigcup_{B \in \mathcal{B}} B \subset \bigcup_j 5 B_j.
+\]
+If $j$ is such that $f^\sharp(x) \gtrsim \epsilon \lambda$ for all $\epsilon > 0$ then we may ignore it, and if not, we apply the previous result to obtain
+\[
+|\{Mf \geq K\lambda \textup{ and } f^\sharp \leq \epsilon \lambda \} |  \lle_d \sum_{j} |\{x \in B_j : Mf \geq K\lambda \} | \lle_d \frac{\epsilon}{K} \sum_j |B_j|.
+\]
+and the result follows. 
+\end{proof}
+\end{claim}
+\item[Q10] If $T$ is a bounded linear operator on $L^2$ which commutes with translations, then it is a Fourier multiplier operator with bounded symbol.
+\begin{proof}
+It is equivalent to show that $T$ is of convolution type, namely, there is some $v$ such that
+\[
+Tf (x) = (v*f)(x).
+\]
+We will deal with questions of boundedness later. Indeed, let $\tau_y$ denote translation by $y$, and let $u \in L^2$ be such that
+\[
+(Tf)(0) = \langle u , f \rangle.
+\]
+Then
+\[
+(Tf)(x) = \tau_{-x} (Tf)(0) =  (T \tau_{-x}f)(0) = \langle u , \tau_{-x} f \rangle.
+\]
+But
+\[
+\langle u , \tau_{-x} f \rangle = \int u(y) f(y+x) dx = \int u(y-x) f(y) dy = v * f,
+\]
+where $v(x) = u(-x)$. Finally, we let $m = \hat{v}$ and recall that $m(D)$ is bounded as an operator on $L^2$ if and only if $m$ is $L^\infty$ bounded. Hence, invoking the boundedness of $T$, we obtain the result.
+\end{proof}
+%\item[Q11]
+\item[Q12] (Transference theorem for $\bbZ^d$). If $m: \bbZ^d \to \bbC$ is bounded, define the multiplier $m(D)$ on $L^2(\bbT^d)$ by the usual formula, but now with the Fourier transform on the torus. Define $\norm{m}_{M^p}$ to be the $L^p(\bbT^d)$ operator norm of $m(D)$.
+
+Let $m: \bbR^d$ be continuous and an $M^p(\bbR^d)$ multiplier for some $1 \leq p \leq \infty$.
+\begin{claim}
+\[
+\norm{m|_{\bbZ^d}}_{M^p(\bbZ^d)} \leq \norm{m}_{M^p(\bbR^d)}.
+\]
+\end{claim}
+\begin{proof}
+Let $f,g \in L^p(\bbT^d)$ and extend them periodically to $\bbR^d$. Let $\varphi_\epsilon$ be an approximate identity, say a Gaussian, and with the usual notation, consider
+\[
+\int_{\bbR^d} (m(D) f_{\epsilon/p})(g_{\epsilon/p'}) \lle \norm{m}_{M^p} \norm{f_{\epsilon}}_p \norm{g_{\epsilon}}_{p'}.
+\]
+We can write this since $f_\epsilon$ and $g_\epsilon$ will lie in $L^p$ and $L^{p'}$, respectively, for any $p$. We now have two limits to consider, the first is
+\begin{lem}
+\[
+\lim_{\epsilon \to 0} \left(\epsilon^{d/2} \int_{\bbR^d} |f(x)|^p dx \right)^{1/p} = \int_{\bbT^d} |f(x)| dx.
+\]
+\end{lem}
+\begin{proof}
+\end{proof}
+The second is
+\begin{lem}
+\[
+\lim_{\epsilon \to 0} \epsilon^{d/2} \int_{\bbR^d} (m(D) f_{\epsilon/p})(g_{\epsilon/p'})
+\]
+\end{lem}
+\begin{proof}
+\end{proof}
+\end{proof}
+\item[Q13](Continuous Littlewood-Paley inequality) For every $t > 0$, let $\psi_t : \bbR^d \to \bbC^d$ be a function obeying the estimates
+\[
+|\nabla^j \psi_t(\xi)| \lle_d t^{-j} \min((|\xi|/2^j)^{-\epsilon}, (|\xi|/2^j)^\epsilon)
+\]
+for all $0 \leq j \leq d+2$, all $\xi \in \bbR^d$ and some $\epsilon > 0$. 
+\begin{claim}
+\[
+\norm{( \int_0^\infty |\psi_t(D) f|^2 \frac{dt}{t})^{1/2}}_{L^p} \lle_{p,d} \norm{f}_{L^p},
+\]
+for $f \in L^p$.
+\end{claim}
+\begin{proof}
+We turn to the vector-valued Calderon-Zygmund operator setting. Let 
+\[
+T : L^2(\bbR^d) \to L^2( \bbR^d ; L^2(\bbR^+, \frac{dt}{t}))
+\]
+\[
+Tf = (t \mapsto \psi_t(D) f) = f * K
+\]
+where $K = \check{\psi}_t(x)$. We wish to check Calderon-Zygmund bounds on $K$.
+%Then
+%\[
+%\norm{Tf(x)}_{L^2(\bbR^d)} = \left(\int_0^\infty |(\psi_t(D) f )(x)|^2 \frac{dt}{t} \right)^{1/2}.
+%\]
+\end{proof}
+\item[Q14] (Chernoff's inequality) If $x_1, \ldots, x_N$ are complex numbers in the unit disc and let $\{\epsilon_j\}$ be iid Bernoulli random variables, then
+\[
+\bbP \left\{  |\sum_{j=1}^N \epsilon_j x_j | \geq \lambda \left( \sum_{j=1}^N|x_j|^2\right)^{1/2}\right\} \lle e^{-\lambda^2/4}
+\]
+for all $0 < \lambda \leq	2 (\sum_{j=1}^N |x_j|^2)^{1/2}$.
+\begin{proof}
+We consider the random variable $\exp(t \sum_{j} \epsilon_j x_j)$ for a positive parameter $t$ and up to considering positive, negative, real and imaginary parts, it suffices to show
+\[
+\bbP \left\{  \sum_{j=1}^N \epsilon_j x_j  \geq \frac{\lambda}{4} \left( \sum_{j=1}^N|x_j|^2\right)^{1/2}\right\} = \bbP \left\{  \exp(t \sum_{j=1}^N \epsilon_j x_j ) \geq \exp\left(\frac{t \lambda}{4} ( \sum_{j=1}^N|x_j|^2)^{1/2}\right)\right\}
+\]
+Further, suppose $\sum |x_j|^2 = 1$. Now, by Chebychev's inequality,
+\[
+\bbP \left\{  \exp(t\sum_{j=1}^N \epsilon_j x_j ) \geq \exp\left(\frac{t\lambda}{4} \right)\right\} \leq \frac{\bbE \exp(t\sum_{j=1}^N \epsilon_j x_j ) }{\exp\left(\frac{t\lambda}{4}\right)}.
+\]
+We can expand
+\[
+\bbE \exp(t\sum_{j=1}^N \epsilon_j x_j ) = \bbE \prod_j \exp(t\epsilon_j x_j ) = \prod_j \bbE\exp(t\epsilon_j x_j ) = \prod_j \cosh(t x_j) .
+\]
+Since
+\[
+\prod_j \cosh(t x_j) \leq e^{\frac{t^2}{2} \sum_j x_j^2} = e^{\frac{t^2}{2}}, 
+\]
+we have
+\[
+\bbP \left\{  \exp(t\sum_{j=1}^N \epsilon_j x_j ) \geq \exp\left(\frac{t\lambda}{4}\right)\right\} \leq \frac{e^{\frac{t^2}{2}}}{{\exp\left(\frac{t\lambda}{4} \right)}} = e^{\frac{t^2}{2} - t\lambda/4}
+\]
+Finally, minimizing with $t = \lambda$, the result follows.
+\end{proof}
+\item[Q15] (Marcinkiewicz-Zygmund vector extension)
+Let $T$ be a linear operator on $L^p$ with operator norm $1$. Then for functions $f_1, f_2, \ldots \in L^p$ we have
+\[
+\norm{ ( \sum_n |TF_n|^2 )^{1/2}}_{L^p} \lle_p \norm{(\sum_n |f_n|^2)^{1/2}}_{L^p}.
+\]
+\begin{proof}
+By monotone convergence, it suffices to prove the claim in the case where only finitely many of the $f_n$ are nonzero. Let $\epsilon_n$ be Bernoulli random variables then by the assumption on $T$ we have
+\[
+\norm{T \sum_{n=1}^N \epsilon_n f_n}_p \lle \norm{\sum_{n=1}^N \epsilon_n f_n}_p.
+\]
+Now take expectations on both sides and use Khinchine's inequality.
+\end{proof}
+\end{enumerate}
+\subsection*{Lecture Notes V}
+\begin{enumerate}
+\item[Q0] Pseudodifferential operators map Schwartz functions to Schwartz functions.
+\begin{proof}
+Let $a$ be a pseudodifferential operator of order $k \geq 0$. We must show that for $f \in \calS$,
+\[
+\sup_{x \in \bbR^d}| x^\alpha \partial^\beta (af)(x) | < \infty
+\]
+We compute
+\begin{align*}
+ x^\alpha \partial^\beta (af)(x) &= x^\alpha \partial_x^\beta \int a(x,\xi) e^{2 \pi ix \cdot \xi} \hat{f}(\xi) d\xi \\
+& \simeq x^\alpha \int \sum_{|\gamma| \leq |\beta|} \binom{\beta}{\gamma}(\partial_x^{\beta - \gamma} a)(x,\xi) \xi^\gamma e^{2 \pi ix \cdot \xi} \hat{f}(\xi) d\xi \\
+ &\simeq \int \sum_{|\gamma| \leq |\beta|} \binom{\beta}{\gamma}(\partial_x^{\beta - \gamma} a)(x,\xi) \,\xi^\gamma (\partial_\xi^\alpha e^{2 \pi ix \cdot \xi}) \hat{f}(\xi) d\xi \\
+& \simeq \int \sum_{|\delta| \leq |\alpha|} \sum_{|\gamma| \leq |\beta|} \binom{\beta}{\gamma} \binom{\alpha}{\delta}(\partial_\xi^{\alpha-\delta} \partial_x^{\beta - \gamma} a)(x,\xi) \,\partial_\xi^\delta (\xi^\gamma \hat{f}(\xi)) e^{2 \pi ix \cdot \xi}  d\xi \\
+\end{align*}
+Since $f \in \calS$, so is $\hat{f}$ and hence we use that $a$ is a symbol of order $k$ and then the fact that
+\[
+\sup_{\xi \in \bbR^d} |\partial_\xi^\delta (\xi^\gamma \hat{f}(\xi))| \lle \brac{\xi}^{-N}
+\]
+for any $N \geq 0$ to interchange the order of summation and integration and thus finish the proof.
+\end{proof}
+\item[Q3] If $m$ is Schwartz and $\check{m}$ obeys
+\[
+|\partial_x^\alpha \check{m}(x)| \lle_{\alpha, k,d,N} |x|^{-d-k-|\alpha|} \brac{x}^{-N}
+\]
+for all multiindices $\alpha$, for all $N \geq 0$ and for some $k < 0$, then $m$ is a symbol of order $k$.
+\begin{proof}
+We wish to show that
+\[
+|\partial_\xi^\alpha m(\xi) | \lle_{\alpha,k ,d} \brac{\xi}^{k - |\alpha|}
+\]
+for all multiindices $\alpha$ and $k > -d$. We write
+\[
+\check{m}(x) = \sum_{j\in \bbZ} \check{m}_j(x)
+\]
+and hence
+\[
+m(\xi) = \sum_{j\in \bbZ} m_j(\xi)
+\]
+so it suffices to esimate $\sum_j |\partial_x^\alpha m_j(\xi)|$. Now with
+\[
+m_j(\xi) = \int e^{2 \pi i x \cdot \xi} \check{m}(x) dx
+\]
+we can compute
+\[
+\xi^\gamma \partial_\alpha^\xi m_j(\xi) = \int \partial_x^\gamma [ (2 \pi i x)^\alpha m_j(x)] e^{2 \pi i x \cdot \xi} dx.
+\]
+Now, recalling that $\check{m}_j$ has support in $|x| \sim 2^j$ we have
+\begin{align*}
+\partial_x^\gamma [ (2 \pi i x)^\alpha m_j(x) &= \sum_{|c| < |\gamma|} (2 \pi i x)^{\alpha - c} \partial_x^{\gamma - c} \delta(2^{-j} x) \check{m}(x) \\
+&= \sum_{|c| < |\gamma|} \sum_{|b| < |\gamma| - |c|} (2 \pi i x)^{\alpha - c} 2^{-j|b|} |x|^{-d-k-|\gamma| + |c| + |b|} \brac{\xi}^{-N}.
+\end{align*}
+And hence, since the support of $m_j$ has volume $2^{jd}$, we have
+\begin{align}
+|\xi^\gamma \partial_\alpha^\xi m_j(\xi)| \lle_{\alpha,d} 2^{j(|\alpha|-k-|\gamma|)} \brac{\xi}^{-N}.
+\label{eq:goodest}
+\end{align}
+Using \eqref{eq:goodest} with $\gamma = 0 = N$,
+\[
+\sum_{2^j \leq |\xi|^{-1}} |\xi^\gamma \partial_\alpha^\xi m_j(\xi)| \lle_\alpha \sum_{2^j \leq |\xi|^{-1}} 2^{j(|\alpha|-k)} \lle_\alpha \brac{\xi}^{k-|\alpha|}.
+\]
+Similarly, with $N > |\alpha| - k$ we have
+\[
+\sum_{2^j > |\xi|^{-1}} |\xi^\gamma \partial_\alpha^\xi m_j(\xi)| \lle_\alpha \brac{\xi}^{-N} \sum_{2^j > |\xi|^{-1}} 2^{j(|\alpha|-k-N)} \lle_\alpha \brac{\xi}^{k-|\alpha|},
+\]
+proving the claim.
+%And we can integrate by parts to obtain
+%\[
+%\int \xi^\alpha e^{-2\pi i x \cdot \xi} \check{m}(x) dx
+%\]
+%Using the estimate on $\check{m}$ we obtain
+%\[
+%|\partial^\alpha_\xi m(\xi) | \lle |\xi|^\alpha \int |x|^{-d-k} \brac{x}^{-N} dx \lle \int_{\{|x| \lle |\xi|^{-1}\}} |x|^{-d-k+|\alpha|} \brac{x}^{-N} dx + \int_{\{|x| \gg |\xi|^{-1}\}} |x|^{-d-k+|\alpha|} \brac{x}^{-N} dx
+%\]
+%and hence
+%\[
+%|\partial^\alpha_\xi m(\xi) | \lle \brac{\xi}^{k-|\alpha|} + \int_{\{|x| \gg |\xi|^{-1}\}} |x|^{-d-k+|\alpha|} \brac{x}^{-N} dx
+%\]
+%and choosing $N$ large enough we obtain the result.
+%\[
+%|\partial^\alpha_\xi m(\xi) | \lle_{\alpha, k , d, N} \int |x|^{-d-k-|\alpha|} \brac{x}^{-N} dx
+%\]
+\end{proof}
+\item[Q4] If $a$ is a symbol of order $k$ then $a^w(X,D) = a(X,D) + b(X,D)$ and $a(X,D) = a^w(X,D) + c(X,D)$ for $b$ and $c$, symbols of order $k-1$. Hence the two quantizations are equivalent modulo lower order operators.
+\begin{proof}
+We recall the expression
+\[
+a^w(X,D)f(x) = \int \left[\int a\left(\frac{x+y}{2},\xi \right) e^{2 \pi i(x-y) \cdot \xi} d\xi \right]f(y) dy
+\]
+and then we use a change of variable and Taylor expansion in the first variable of $a$ to write
+\[
+a^w(X,D)f(x) = \int \left[\int \left[a\left(x,\xi \right) + y a_x(x,\xi) \right] e^{2 \pi i(x-y) \cdot \xi} d\xi \right]f(y) dy.
+\]
+Thus integrating by parts to eliminate the $y$ term, we proceed as in the proof of Lemma 2.1.3. to conclude. The other direction is handled analagously.
+\end{proof}
+\item[Q5] (Endpoint Sobolev embedding). Let $1 < p < \infty$ and $s = d/p$.
+\begin{claim}
+If $f \in \dot W{}^{s,p}$ then $f \in$ with
+\[
+\norm{f}_{\BMO} \lle_{d,p} \norm{f}_{\dot W{}^{s,p}} = \norm{|\nabla|^s f}_{p}
+\]
+\end{claim}
+\begin{proof}
+We proceed in the case of $p = 2$. Here we have
+\[
+\frac{1}{|B|}\int |f - f_B| dx \lle \norm{f - f_B}_{L^2(B,\frac{dx}{|B|})} \lle \norm{P_{\leq A}(f - f_B)}_{L^2(B,\frac{dx}{|B|})} + \frac{1}{|B|^{1/2}} \norm{P_{>A} f}_{L^2}.
+\]
+To deal with the first term, we use Taylor's theorem to write
+\[
+I:= \norm{P_{\leq A}(f - f_B)}_{L^2(B,\frac{dx}{|B|})} \leq R \norm{\nabla P_{\leq A} f}_{\infty} \lle C R \int |\xi|^{1-\frac{d}{2}} |\xi|^{d/2} |\widehat{P_{\leq A} f} | d\xi.
+\]
+By H\"older's inequality we then have
+\[
+I \lle_{p,d} R \norm{f}_{\dot W{}^{s,p}} \left( \int_{|\xi| \leq A} |\xi|^{2(1-\frac{d}{2}) } \right)^{1/2} \lle R A \norm{f}_{\dot W{}^{s,p}}.
+\]
+To deal with the second term, we have (writing $|B|$ in terms of the radius),
+\[
+\frac{1}{|R|^{d/2}} \left(\int_{|\xi| \geq A} |\hat{f}(\xi)|^2 d\xi \right)^{1/2} \leq \frac{1}{|AR|^{d/2}} \left(\int_{|\xi| \geq A} |\xi|^d |\hat{f}(\xi)|^2 d\xi \right)^{1/2} = (AR)^{-d/2} \norm{f}_{\dot W{}^{s,p}}.
+\]
+Taking $A = R^{-1}$, we conclude the proof.
+\end{proof}
+\item[Q6] (H\"older-Sobolev embedding). Let $1 < p < \infty$, $0 < \delta < 1$ and $s = d/p + \delta$. If $f \in \dot W^{s,p}(\bbR^d)$ then we have
+\[
+|f(x) - f(y) | \lle_{d,p,\delta} \norm{f}_{\dot W{}^{s,p}} |x-y|^\delta.
+\]
+\begin{proof}
+Similarly to our method in the previous problem, we divide $f$ into its low and high frequencies and estimate each piece separately. We have
+\[
+|f(x) - f(y)| \lle |x-y| \norm{\nabla P_{\leq A} f}_\infty + 2 \|P_{>A} f\|_\infty := I + II. 
+\]
+Then
+\[
+I \leq |x-y| \int_{|\xi| \leq A} |\xi||\hat{f}(\xi)| d\xi \leq \norm{f}_{\dot W{}^{s,p}} \left(\int_{|\xi| \leq A} |\xi|^{2 - d - 2\delta}\right) \lle A^{1-\delta} \norm{f}_{\dot W{}^{s,p}}.
+\]
+Next, we have
+\[
+II \lle \int_{|\xi| \geq A} |\hat{f}(\xi)| d\xi \lle \left(\int_{|\xi| \geq A} 
+|\xi|^{-d - 2\delta} \right)^{1/2}\norm{f}_{\dot W{}^{s,p}} \lle A^{-\delta} \norm{f}_{\dot W{}^{s,p}}.
+\]
+Taking $A = |x-y|^{-1}$, we're done.
+\end{proof}
+\end{enumerate}
+\subsection*{Lecture notes VI}
+\begin{enumerate}
+%\item[Q1]
+%\item[Q2](Carleson embedding theroem) Let $\mu$ be a positive Radon measure on $\bbR_+ \times \bbR^d$. Then, up to changes in the implied constant, the following are equivalent:
+%\begin{enumerate}
+%\item We have
+%\[
+%\mu([0,r] \times B(x,r)) \lle_d |B(x,r)|
+%\]
+%for all balls $B(x,r)$.
+%\item For any $1 < p < \infty$ we have
+%\[
+%\int_{\bbR_+ \times \bbR^d} \left( \frac{1}{|B|} \int_B |f| \right)^p d\mu(r,x) \lle_{p,d} \norm{f}_p^p
+%\]
+%\end{enumerate}
+%\begin{proof}
+%Suppose first that $(b)$ holds and let $f = \1_B$. Then
+%\[
+%\int_0^r \int_{B(x,r)} d\mu(x,r) \lle \int_{\bbR_+ \times \bbR^d} d\mu(x,r) = \int_{\bbR_+ \times \bbR^d} \left( \frac{1}{|B|} \int_B |f| \right)^p d\mu(r,x) \lle_{p,d} |B(x,r)|.
+%\]
+%To show the converse, we use the distributional formulation for the $L^p$ norm to write
+%\[
+%\int_{\bbR_+ \times \bbR^d} \left( \frac{1}{|B|} \int_B |f| \right)^p d\mu(r,x) = p \int_0^\infty \mu\{(r,x) : f_B > \lambda\} d\lambda
+%\]
+%\end{proof}
+\item[Q3] (Moser's inequality) Let $s > 0$ and $1< p < \infty$. Then
+\[
+\norm{fg}_{W^{s,p}}\lle_{s,p,d}\norm{f}_{W^{s,p}}\norm{g}_{\infty} + \norm{f}_{\infty} \norm{g}_{W^{s,p}}
+\]
+for all Schwartz $f,g$.
+\begin{proof}
+We start by studying the expression
+\[
+\norm{fg}^2_{W^{s,p}} \sim \sum_N N^{2s} \norm{P_N(fg)}^2_p
+\]
+We may further write
+\[
+f = \sum_M P_M f, \quad \textup{and} \quad g = \sum_R P_R f
+\]
+and hence, placing these expressions in the sum we get the expression
+\[
+\sum_N N^{2s} \norm{P_N((\sum_M P_M f )(\sum_R P_R g))}^2_p
+\]
+which, according to the rule $M+R = N$, can be divided in to four cases:
+\begin{enumerate}
+\item[(i)] $R \ll M \sim N$,
+\item[(ii)] $M \ll R \sim N$,
+\item[(iii)] $M \sim R \ll N$ and
+\item[(iv)] $N \ll M \sim R$.
+\end{enumerate}
+Before delving into the proofs of the cases, we prove the following
+\begin{lem}
+For any $k \in \bbZ$, we have
+\[
+|P_{< k} f| \lle Mf(x).
+\]
+\end{lem}
+\begin{proof}
+We have
+\begin{align*}
+|P_{< k} f|  &= |\int f(y) 2^{dk} \check{\phi}(2^{dk}(x-y)) dy|\\
+& \lle \int |f(y)| 2^{dk}(1 + 2^k|x-y|)^{-100d} dy \\
+& \lle 2^{nk} \int_{B(x, 2^{-k})}|f(y)| dy + \sum_{j > 0} 2^{nk} 2^{-100dj} \int_{B(x,2^{-k+j})}|f(y) dy. \qedhere
+\end{align*}
+\end{proof}
+Case $(i)$ and $(ii)$ are symmetric, so we treat $(i)$. First, we recall the following variant of the Littlewood-Paley inequality:
+\begin{lem}
+For all $1 < p < \infty$,
+\[
+(\sum_{N > 0} \norm{P_N f_N}_p^2)^{1/2} \lle (\sum_{N > 0} \norm{f_N}_p^2)^{1/2}.
+\]
+\end{lem}
+Thus we throw away the $P_N$ and, since $M \sim N$ we are left to estimate
+\[
+\sum_N N^{2s} \norm{(P_Nf) (P_{< R} g)}^2_p
+\]
+and by the lemma, we can bound $|P_{< R} g| \lle \norm{Mg}_\infty \lle \norm{g}_\infty$ and resum in $N$ to get the bound
+\[
+\sum_N N^{2s} \norm{(P_Nf) (P_{< R} g)}^2_p \lle \norm{g}_\infty^2 \norm{f}^2_{W^{s,p}}.
+\]
+Case $(iii)$ is simple to treat so we deal with $(iv)$. We can rewrite the term of interest at
+\[
+\sum_N \sum_{a,b} N^{2s} \norm{(P_{N+a}f) (P_{N+b} g)}^2_p.
+\]
+The idea now is that when $a$ and $b$ get large, it is hard for them to get together and cancel to form a low frequency. Again using the lemma, we can bound
+\[
+\sum_N \sum_{|a-b| \leq 2} N^{2s} \norm{(P_{N+a}f) (P_{N+b} g)}^2_p \lle \norm{f}_\infty \sum_N \sum_{|a-b| \leq 2} N^{2s} 2^{-bs} \norm{(P_{N} g)}^2_p 
+\]
+and hence
+\[
+\sum_N \sum_{a,b} N^{2s} \norm{(P_{N+a}f) (P_{N+b} g)}^2_p \lle \norm{f}_\infty \sum_{|a-b| \leq 2}  2^{-bs} \sum_N N^{2s} \norm{(P_{N} g)}^2_p ,
+\]
+which yields the desired result.
+%We proceed for $p=2$. We write
+%\[
+%fg = P_{\leq 1} (fg) + \sum_{N > 1} P_N(fg)
+%\]
+%and note that it suffices to bound the second term since
+%\[
+%\norm{P_{\leq 1} (fg)}_{H^s} \lle \norm{fg}_{2} \leq \norm{f}_{H^s} \norm{g}_\infty.
+%\]
+%For the second term, we further decompose $f$ in frequency space and we have
+%\[
+%P_N(fg) = P_N( (P_{< \frac{N}{8}} f) g) + \sum_{M} P_N(  (P_M f) g)..
+%\]
+%Now for any fixed $K$ we have the bound
+%\[
+%|P_{<K}f| \lle Mf
+%\]
+%where $Mf$ is the maximal operator, and hence
+%\[
+%|P_N( (P_{< \frac{N}{8}} f) g)| \lle \norm{Mf}_\infty |P_N g| \lle \norm{f}_\infty |P_N g|
+%\]
+%Finally, we deal with the last term. Note that
+%\[
+%\norm{ P_N(  (P_M f) g)}_{H^s} = \norm{\psi_N( \psi_M \hat{f} * \hat{g})}_{H^s} \lle N^s \norm{ \psi_M \hat{f} * \psi_N \hat{g}}_2.
+%\]
+%By Young's inequality and Plancherel, we have the bound
+%\[
+%\norm{ P_N(  (P_M f) g)}_{H^s} \lle N^s \norm{P_M f}_1 \norm{P_N g}_2.
+%\]
+%Recall that
+%\[
+%\norm{P_M f}_2 \lle M^{-s} \norm{P_M f}_{H^s}
+%\]
+%and plugging all this in the sum, we have
+%\[
+%\norm{fg}_{H^s} \lle \norm{f}_{H^s} \norm{g}_\infty + \sum_{N > 1} N^s \left[\norm{f}_\infty \norm{P_N g}_{2} +  \sum_{M > \frac{N}{8}} M^{-s} \norm{P_M f}_{H^s} \norm{g}_2 \right] .
+%\]
+%For the first term in brackets we have
+%\[
+% \sum_{N > 1} N^s  \norm{f}_\infty \norm{P_N g}_{2} \lle \norm{f}_\infty \norm{g}_{H^s}.
+%\]
+%For the second term, we estimate:
+%\[
+%\sum_{N > 1} N^s \sum_{M > \frac{N}{8}} M^{-s} \norm{P_M f}_{H^s}
+%\]
+%
+%(NOT DONE NOT DONE!)
+\end{proof}
+%\item[Q4]
+\item[Q5] We will complete the proof of Lemma 7.1 for nonlinearities of power type:
+\begin{claim}
+Let $u$ be Schwartz and let $1 = \sum_j \psi_j$. If $F$ is a power-type nonlinearity with exponent $p \geq 1$, then
+\[
+|\psi_j(D)F(u)| \lle_{p,d} \sum_k \min(2^k,1)[M(|u|^{p-1}) M( \psi_{j +k}(D) u) + M(|u|^{p-1} \psi_{j+k}(D)u)].
+\]
+\end{claim}
+\begin{proof}
+We can go through the proof for the Lipschitz case until we get to the point where we use the Lipschitz condition and instead we remark that
+\[
+F(u(y)) = F(\psi_{\leq 0}(D) u(y)) + O\left(|\psi_{> 0}(D) u(y)|(|u(y)|^{p-1} +|\psi_{\leq 0}(D) u(y)|^{p-1})\right)
+\]
+and
+\[
+|F(\psi_{\leq 0}(D) u(y)) - F(\psi_{\leq 0}(D) u(0))| \lle |\psi_{\leq 0}(D) u(y) - \psi_{\leq 0}(D) u(0)|( |\psi_{\leq 0}(D) u(y)|^{p-1} + |\psi_{\leq 0}(D) u(0)|^{p-1})
+\]
+Similarly to in the proof, we can estimate the first term by
+\[
+\sum_{k > 0} 2^k M(\psi_k(D) |u|^{p-1}),
+\]
+noticing that $\psi_< 0$ and $\psi \geq 0$ only have common support around $k=0$ and so we can shift to positive $k$. For the second term, we use the fundamental theorem of calculus and the local constancy of band limited functions to estimate
+\[
+|\psi_{\leq 0}(D) u(y) - \psi_{\leq 0}(D) u(0)| = |\int_0^1 y \cdot \nabla \psi_k(D) u(ty) dt| \lle \sum_{k \geq 0} 2^k M \psi_k u(0).
+\]
+Finally, using that
+\[
+|\psi_{\leq 0}(D) u(y)|^{p-1} \lle M |u|^{p-1},
+\]
+we obtain the result.
+\end{proof}
+\item[Q6] We prove Corollary 7.2 for nonlinearities of power type:
+\begin{claim}
+Let $u$ be Schwartz. If $F$ is a Lipschitz nonlinearity with exponent $p$ then
+\[
+\norm{F(u)}_{W^{s,q}} \lle_{s,q,d} \norm{u}^{p-1}_{L^r} \norm{u}_{W^{s,t}}
+\]
+whenever $1< q,r, t < \infty$ such that $\frac{1}{q} = (p-1)/r + 1/t.$
+\end{claim}
+\begin{proof}
+Since $F(u) = O(|u|^{p-1} u)$, we have by H\"older's inequality that 
+\[
+\norm{F(u)}_{L^q} \lle \norm{|u|^{p-1} u}_q \lle \norm{|u|^{p-1}}_{r/(p-1)} \norm{u}_t = \norm{u}_r^{p-1} \norm{u}_t \lle_{s,q,d} \norm{u}_r^{p-1} \norm{u}_{W^{s,t}},
+\]
+and hence it remains to show that
+\[
+\norm{F(u)}_{\dot W^{s,q}} \lle_{s,q,d} \norm{u}_{\dot W^{s,q}}.
+\]
+By the Littlewood-Paley characterisation of Sobolev spaces, we have
+\[
+\norm{F(u)}_{\dot W^{s,q}} \sim_{s,q,d} \norm{(\sum_j 2^{2sj}|\psi_j(D) F(u)|^2)^{1/2}}_q.
+\]
+By the previous exercise and the triangle inequality, we conclude that
+\[
+\norm{F(u)}_{\dot W^{s,q}} \sim_{s,q,d} \sum_k \min(2^k,1)\norm{(\sum_j 2^{2sj}|[M(|u|^{p-1}) M( \psi_{j +k}(D) u) + M(|u|^{p-1} \psi_{j+k}(D)u)]|^2)^{1/2}}_q.
+\]
+Let's split the sum in square brackets in two and deal with the first term. Applying Fefferman-Stein we have
+\[
+\norm{F(u)}_{\dot W^{s,q}} \sim_{s,q,d} \sum_k \min(2^k,1)\norm{M(|u|^{p-1}) (\sum_j 2^{2sj}|( \psi_{j +k}(D) u)|^2)^{1/2}}_q.
+\]
+and we conclude by H\"older's inequality, Littlewood-Paley, and the maximal inequality that
+\[
+\norm{F(u)}_{\dot W^{s,q}} \lle_{s,q,d} \norm{u}_r^{p-1}\norm{u}_{W^{s,t}}.
+\]
+For the second term, we have
+\[
+\norm{F(u)}_{\dot W^{s,q}} \sim_{s,q,d} \sum_k \min(2^k,1)\norm{(\sum_j 2^{2sj} |M(|u|^{p-1} \psi_{j+k}(D)u)]|^2)^{1/2}}_q.
+\]
+and we once again apply Fefferman-Stein to obtain
+\[
+\norm{F(u)}_{\dot W^{s,q}} \lle_{s,q,d} \sum_k \min(2^k,1)\norm{|u|^{p-1}(\sum_j 2^{2sj} |( \psi_{j+k}(D)u)]|^2)^{1/2}}_q,
+\]
+and conclude as before.
+\end{proof}
+\item[Q7] For $1\leq p \leq \infty$ and $0< \alpha < 1$, define the H\"older space $\Lambda_p^\alpha(\bbR^d)$ to be functions whose norm
+\[
+\norm{u}_{\Lambda_p^\alpha(\bbR^d)} := \norm{u}_{p} + \sup_{0<|h|<1} \frac{\norm{\textup{Trans}_h u - u}_p}{|h|^\alpha}
+\]
+is finite.
+\begin{enumerate}
+\item[(i)] We have the equivalence
+\[
+\norm{u}_{\Lambda_p^\alpha(\bbR^d)} := \norm{u}_{p} + \sup_{j\geq0} 2^{j\alpha} \norm{\psi_j(D)u}_p.
+\]
+\begin{proof}
+We have to show that
+\[
+\sup_{j\geq0} 2^{j\alpha} \norm{\psi_j(D)u}_p \sim \sup_{0<|h|<1} \frac{\norm{\textup{Trans}_h u - u}_p}{|h|^\alpha}. 
+\]
+Suppose first the right side is finite. Then
+\begin{align*}
+\norm{\psi_j(D) u}^p_p  = \int |\int \check{\psi_j}(y) u(x-y) dy|^p dx = \int |\int \check{\psi_j}(y) [u(x-y) - u(x)] dy|^p dx
+\end{align*}
+and we can bound this last term by
+\[
+\sup_{0 < |h| < 1} \frac{\norm{\textup{Trans}_h u - u}_p}{|h|^\alpha} \int |y|^\alpha|\check{\psi_j}(y)|^p dy \lle 2^{-j\alpha} \sup_{0 < |h| < 1} \frac{\norm{\textup{Trans}_h u - u}_p}{|h|^\alpha} .
+\]
+Conversely, let $C:= \sup_{j\geq0} 2^{j\alpha} \norm{\psi_j(D)u}_p$ and write
+\begin{align*}
+\norm{u(\cdot-y) - u(\cdot)}_p &= \sum_j \norm{P_j u(\cdot -y) - P_ju(\cdot)}_p \\
+&\lle \sum_{{2^j} < |y|^{-1}} \norm{P_j u(\cdot -y) - P_ju(\cdot)}_p  + \sum_{{2^j} \geq |y|^{-1}} 2 \norm{P_j u}_p \\
+& \lle \sum_{{2^j} < |y|^{-1}} \norm{\nabla P_j u}_p |y| + \sum_{{2^j} \geq |y|^{-1}} 2 \norm{P_j u}_p .
+\end{align*}
+Now by hypothesis we have
+\[
+\norm{\nabla P_j u}_p \lle 2^j \norm{P_j u}_p \lle 2^{j(1-\alpha)} C.
+\]
+hence
+\[
+\norm{u(\cdot-y) - u(\cdot)}_p \lle \sum_{{2^j} < |y|^{-1}} 2^{j(1-\alpha)} C |y| + \sum_{{2^j} \geq |y|^{-1}}  C 2^{-j\alpha} \lle |y|^\alpha,
+\]
+proving the result.
+\end{proof}
+\item[(ii)] We will show that
+\[
+\norm{F(u)}_{\Lambda_q^\alpha} \lle \norm{u}_{\Lambda_q^\alpha}
+\]
+for any Lipschitz nonlinearity and for a power nonlinearity, we have
+\[
+\norm{F(u)}_{\Lambda_q^\alpha} \lle \norm{u}_{r}^{p-1} \norm{u}_{\Lambda_q^\alpha}
+\]
+for $\frac{1}{q} = \frac{(p-1)}{r} + \frac{1}{t}$.
+\begin{proof}
+We start with Lipschitz nonlinearities. Since $F(x) - F(y) = O(|x-y|)$, we immediately have
+\[
+\norm{\textup{Trans}_h F(u) - F(u)}_p  \lle \norm{\textup{Trans}_h(u) - (u)}_p,
+\]
+as required. For nonlinearities of power type, with $F(x) - F(y) = O(|x-y|(|x|^{p-1} + |y|^{p-1}))$ we have
+\[
+\norm{\textup{Trans}_h F(u) - F(u)}_q \lle \norm{|\textup{Trans}_h u - u|(|\textup{Trans}_h u|^{p-1} + |u|^{p-1})}_q
+\]
+which by H\"older's inequality and the triangle inequality can be bounded by
+\[
+\norm{|\textup{Trans}_h u - u|}_t \norm{u}_r^{p-1} .
+\]
+Dividing by $|h|^\alpha$ and taking the supremum over $h$, we obtain the result.
+\end{proof}
+\end{enumerate}
+%\item[Q8]
+\end{enumerate}
+\subsection*{Lecture notes VIII}
+\begin{enumerate}
+\item[Q1] We prove the following lemma on Asymptotic expansion for finite order non-degenerate phases.
+\begin{lem}
+Let $a$ be a bump function and let $\phi:\bbR \to \bbR$ be smooth and have stationary point at $x_0$ with $\phi'(x_0) = \ldots = \phi^{(k-1)}$ and $\phi^{(k)}(x_0) \neq 0$ for some $k \geq 2$. If $\phi$ has no other stationary points on the support of $a$ then there exist constants $c_0, c_1, \ldots$, with each $c_n$ depending only on finitely many derivative of $a$, $\phi$ are $x_0$ such that we have the asymptotic formula
+\[
+I_{a, \phi}(\lambda) = \sum_{n=0}^N c_n \lambda^{-(n+1)/k} e^{i \lambda \phi(x_0)} + O_{N,a, \phi,k}(\lambda^{-(N+1)/k},
+\]
+for all $N \geq 0$. The quantity $c_0$ obeys the size estimate
+\[
+|c_0| \sim_k |\phi^{(k)}(x_0)|^{-1/k}|a(x_0)|.
+\]
+\end{lem}
+\begin{proof}
+
+\end{proof}
+\item[Q3]
+\end{enumerate}
+\end{document}

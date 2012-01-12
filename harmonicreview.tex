@@ -1,0 +1,1617 @@
+\documentclass[11pt]{article}
+\usepackage{mathrsfs}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{fullpage}
+\usepackage{cancel}
+%\usepackage{txfonts} 
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{mathabx}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem*{claim}{Claim}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem*{defn}{Definition}
+\newtheorem*{speccase}{Special Case}
+
+\theoremstyle{remark}
+\newtheorem{exr}{Exercise}
+\newtheorem*{ex}{Example}
+\newtheorem*{rmk}{Remark}
+\newtheorem*{rmks}{Remarks}
+
+\newcommand{\A}{\mathscr{A}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calS}{\mathcal{S}}
+
+%%%%%%%%%%%%%%%% New Commands %%%%%%%%%%%%%%%%
+
+\newcommand{\1}{\textbf{1}}
+\newcommand{\lle}{\lesssim}
+\newcommand{\BMO}{\textup{BMO}}
+\def\norm#1{\| #1  \|}
+\newcommand\pnormint[2]{\left(\int |#1|^{#2}\right)^{1/#2}}
+\def\brac#1{\langle #1  \rangle}
+
+%%%%%%%%%%%%%%%% Math Blackboard Letters %%%%%%%%%%%%%%%%%
+
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\bbT}{\mathbb{T}}
+\newcommand{\bbC}{\mathbb{C}}
+\newcommand{\bbP}{\mathbb{P}}
+\newcommand{\bbE}{\mathbb{E}}
+
+\begin{document}
+{\noindent\Large Maximal operators \hfill Dana Mendelson}
+\vspace{4mm}
+
+It often arrises that we wishes to study the behaviour of a sequence of the type $\phi_r * f$, for some approximate identity $\phi$ as $r \to 1$. It is simple enough to determine that $L^p$ convergence will hold for $1 \leq p < \infty$, however often one want to determine the pointwise behaviour of the sequence. This is, for instance, the case when one studies the pointwise convergence of Fourier Series, or when one sets $\phi_r = P_r$, the Poisson kernel. 
+
+It will usually be easy enough to prove pointwise convergence on a dense subset of $L^p$, say Schwartz functions. Logically, we would write $f = \lim g_n$ for general $f \in L^p$ and consider
+\[
+\lim_r \lim_n \phi_r * g_n.
+\]
+All would be resolved if we could interchange the two limits. This, as is typical in such situations, required some form of uniform control. This is where maximal functions come into the picture. The first type of maximal function will serve to help us in the case where we consider radially bounded approximate identities.
+\begin{defn}[Hardy-Littlewood maximal fucntion]
+Let $f$ be locally integrable. We define the Hardy-Littlewood maximal function by
+\[
+Mf(x) = \sup_{x \in Q} \frac{1}{|Q|} \int |f(y)| dy.
+\]
+\end{defn}
+There are various versions of this operator (uncentered, dyadic, etc.) which up to some constants depending on the dimension are all equivalent, so we will work with whichever is most convenient. Moreover, one can show that the maximal function is measurable and lower-semicontinuous. The main theorem about the Hardy-Littlewood maximal function is 
+\begin{thm}
+$Mf$ is weak $(1,1)$ and strong $(p,p)$ for $1 < p \leq \infty$. 
+\end{thm}
+\begin{proof}
+Let $E_\alpha = \{x : Mf > \alpha\}$ and let $E \subset E_\alpha$ be compact. For $x \in E$, there exists some $B_x \subset E_\alpha$ such that
+\[
+|B_x| < \frac{1}{\alpha} \int_{B_x} |f(y)| dy.
+\]
+Now $E$ is covered by the union of such balls, so we can find a finite subcollection covering $E$. Then, by the Vitali covering lemma we can find a disjoint subcollection $\{B_i\}$ such that $E \subset \bigcup 5B_i$. In particular, we have
+\[
+|E | \simeq \sum_{i} |B_i| \lle \frac{1}{\alpha} \sum_i \int_{B_I} |f(y)| dy = \frac{1}{\alpha} \int_{\cup B_i} |f(y)| dy \leq \frac{1}{\alpha} \int_{E_\alpha} |f(y)| dy.
+\]
+Now take the supremum over $E \subset E_\alpha$. To prove the result for all $p$, note that $Mf$ is trivally bounded on $L^\infty$ and use Marcinkiewicz interpolation.
+\end{proof}
+The following result is extremely useful to our cause of proving pointwise convergence for operators.
+\begin{prop}
+Let $\{T_t\}$ be a family of linear operators on $L^p$ and define
+\[
+T^* f(x) = \sup_t |T_t f(x)|.
+\]
+If $T^*$ is weak $(p,q)$ then the set
+\[
+\calE = \{f \in L^p : \lim_{t \to t_0} T_t f(x) = f(x) \textup{ a.e. }\}
+\]
+is closed in $L^p$.
+\label{prop:closedconv}
+\end{prop}
+\begin{proof}
+Let $\lambda > 0$ and $f_n \in \calE$ with $f_n \to f$ in $L^p$. We calculate
+\begin{align*}
+|\{ \limsup_{t \to t_0} |T_t f(x) - f(x)| > \lambda \}| \leq |\{ T^*(f_n - f)(x)) &> \lambda/2 \}| \\
+& + |\{ |f_n - f)(x)| > \lambda/2\}|
+\end{align*}
+and use here the weak-$(p,q)$ bounds along with the convergence of $f_n \to f$ in $L^p$ to show this goes to zero. Noting that
+\[
+\{\limsup_{t \to t_0} |T_t f(x) - f(x)| > 0 \} \subset \bigcup \{\limsup_{t \to t_0} |T_t f(x) - f(x)| > 1/k \}
+\]
+we conclude with a union bound.
+\end{proof}
+With this proposition in hand, it is simple, for instance to prove the Lebesgue differentiation therorem.
+\begin{thm}
+Let $f \in L^1_{\textup{loc}}$, then
+\[
+\lim_{r \to 0^+} \frac{1}{|B_r|} \int_{B_r} |f(x-y) - f(x)| dy = 0.
+\]
+\end{thm}
+\begin{proof}
+Note that this is true for all continuous $f$, then apply the previous proposition.
+\end{proof}
+Finally, we prove the following proposition which makes explicit the use of the maximal function when studying approximate identities.
+\begin{prop}
+Let $\phi$ be a function which is positive, radial, decreasing and integrable. Then
+\[
+\sup_{t > 0} |\phi_t * f(x)| \leq \norm{\phi}_1 Mf(x)
+\]
+\end{prop}
+\begin{proof}
+Proceed for simple functions and then approximate.
+\end{proof}
+\begin{cor}
+If $|\phi(x)| \leq \psi(x)$ almost everywhere, where $\psi$ is radial, decreasing and integrable, then the mzimal function $\sup_t|\phi_t * f(x)|$ is weak $(1,1)$ and strong $(p,p)$ for $1 < p \leq \infty$.
+\end{cor}
+Finally, we obtain
+\begin{cor}
+Under the hypotheses above, if $f \in L^p$, $1 \leq p < \infty$, or if $f \in C_0$, then
+\[
+\lim_{t \to 0} \phi_t * f(x) = \left( \int \phi \right) \cdot f(x)
+\]
+almost everywhere. In particular the Ces\'aro, Abel-Poisson, etc. summation methods converge to $f(x)$ almost everywhere if $f$ is in only of the given spaces.
+\begin{proof}
+Use Proposition \ref{prop:closedconv}. Also, one can check that the summation kernels satisfy the necessary hypotheses.
+\end{proof}
+\end{cor}
+\newpage
+{\noindent\Large Calder\'on-Zygmund operators \& More! }
+\vspace{6mm}
+
+A singular integral operator $T : \calS \to \calS'$, is an operator associated to a kernal $K(x,y)$ such that for $f \in \calS$, the distribution $Tf$ is given by the integral
+\[
+Tf(x) = \int K(x,y) f(y) dy
+\]
+where $K$ is singular on the diagonal $x = y$. Specifically, we will deal with kernels whose singularities are such that
+\begin{align}
+|K(x,y)| \lle |x-y|^{-d}
+\label{eq:decay}
+\end{align}
+for $x \neq y$. We will be interested in determining the necessary and sufficient condition for such an operator to be bounded on $L^p$. We will consider, in particular, Calder\'on-Zygmund operators (CZO) and their properties. We begin with the following definitions
+\begin{defn}[Calder\'on-Zygmund kernel]
+A Calder\'on-Zygmund kernel is a singular kernel which, in addition to \eqref{eq:decay} obeys the H\"older type regularity estimated
+\[
+K(x,y') = K(x,y) + O \left( \frac{|y-y'|^\sigma}{|x-y|^{\sigma+d}} \right), \quad \textup{when } |y-y'| \leq \frac{1}{2} |x-y|
+\]
+and
+\[
+K(x,y) = K(x',y) + O \left( \frac{|x-x'|^\sigma}{|x-y|^{\sigma+d}} \right), \quad \textup{when } |x-x'| \leq \frac{1}{2} |x-y|
+\]
+for some exponent $0 < \sigma \leq 1$.
+\end{defn}
+Given this definition, we are equipped to define
+\begin{defn}[Calder\'on-Zygmund operaors]
+A Calder\'on-Zygmund operaor is a bounded linear operator $T : L^2(\bbR^d) \to L^2(\bbR^d)$ such that there exists a singular kernel $K$ for which
+\[
+Tf(x) = \int K(x,y) f(y) dy
+\]
+whenever $f \in L^2$ is compactly supported and $x \not\in \textup{supp} f$.
+\end{defn}
+There is an alternative definition of Calderon-Zygmund operators which is equivalent and sometimes conceptually more comfortable to work with.
+\begin{defn}[Singular kernels and Calderon-Zygmund operators, revised]
+Let $K(x)$ be a termpered distribution which coincides with a locally integrably function away from zero and is such that
+\begin{enumerate}
+\item $|\hat{K}(x)| \leq A$,
+\item $\int_{|x| > 2|y|} |K(x-y) - K(x)| dx \leq B$, for $0 < |y|$
+\item $\int_{R_1 < |x| < R_2} K(x) dx = 0$, for $0 < R_1 < R_2 < \infty$. 
+\end{enumerate}
+With this definition, we define 
+\[
+Tf (x) = p.v. \int f(x-y) K(y) dy.
+\]
+\end{defn}
+\begin{rmks}
+The second condition is called the H\"ormander condition and in particular, if $K$ satisfies
+\[
+|\nabla K(x)| \leq \frac{B}{|x|^{n+1}}
+\]
+it is satisfied. The third property is called the cancellation property and it is crucially important to the existence of the principal value integral.
+Although $T$ uniquely determines $K$, the converse is not true. For instance, if $T \equiv 0$, then $K = 0$ but given a bounded function $b : \mathbb{R}^d \to \bbC$, the operator $Tf := bf$ is a CZO with kernel $K = 0$. 
+\end{rmks}
+The following exercise reveals that this is the only source of ambiguity.
+\begin{exr}
+Let $T$ and $T'$ be two CZOs with the same kernel $K$. Then there exists a bounded function $b \in L^\infty$ such that $Tf = T'f + bf$ for all $f \in L^2(\bbR^d)$. (Hint: Reduce to a case where you can apply the Radon-Nikodym theorem).
+\end{exr}
+\begin{ex}
+The Hilbert transform
+\[
+Hf(x) := p.v. \frac{1}{\pi} \int_{\bbR} \frac{f(x-t)}{t} dt
+\]
+is a CZO with kernel $K(x,y) = \frac{1}{\pi(y-x)}$.
+\end{ex}
+Even this simple example highlights some important properties of CZO's. For instance, note that if we replace the kernel of the Hilbert transform by $1/|x-y|$, the integral is no longer defined (as threatened in the remark above). Further, we note that the Hilbert transform is self-adjoint, translation invariant and scale-invariant. These properties are a little too much to hope for in general but we do have the following result which is still rather useful.
+\begin{exr}
+Show that the class of CZOs is self-adjoint, translation invariant and scale-invariant. What happens to the kernel each time?
+\end{exr}
+\begin{rmk}
+The property of self-adjointness is exceptionally useful as it will allow us to use the technique of duality when proving $L^p$ bounds for CZOs.
+\end{rmk}
+Although we defined CZOs on $\calS$, as mentioned previously, one ultimately wishes to examine boundedness properties on larger spaces such as the $L^p$ spaces. We undertake this study now. To start, we notice that CZOs are \emph{not} bounded on $L^1$: for the Hilbert transform we can check the asymptotic
+\[
+\lim_{|x| \to \infty} x Hf(x) = \frac{1}{\pi} \int_{\mathbb{R}} f,
+\]
+that is, $Hf$ only decays like $1/|x|$ at infinity. All is not lost, though, because the following,  weaker result does hold
+\begin{thm}
+All CZOs are of weak type $(1,1)$ with an operator norm of $O_d(1)$.
+\label{thm:w11}
+\end{thm}
+\begin{exr}
+Prove Theorem \ref{thm:w11}.
+\begin{enumerate}
+\item[(1)] Let $f \in L^1 \cap L^2$. Use available symmetries to normalize the quantities involved.
+\item[(2)] Using a Calder\'on-Zygmund decomposition on $f$ at level $\lambda$ to write
+\[
+f = g + \sum_Q b_Q,
+\]
+where $g$ and the $b_Q$ have the usual properties and
+\[
+\bigcup Q \subset \{Mf \geq \lambda \}.
+\]
+Deal with the ``good  part" of $f$ with the help of Chebyshev.
+\item[(3)] Show that for $B = B(x_0,r) \subset \bbR^d$, and $f \in L^1(B)$ with mean $0$,
+\[
+|Tf(y)| \lle_d \frac{r^\sigma}{|y-x_0|^{d+\sigma}} \int_B|f|\qquad x \not\in 2B.
+\] 
+\item[(4)] Conclude that $Tb_Q$ has $L^1$ bounds outside some dilate of $Q$ (which imply weak $(1,1)$ bounds).
+\item[(5)] Show the remaining, untreated set has small enough measure.
+\end{enumerate}
+\end{exr}
+The following is now an easy Corollary:
+\begin{exr}
+CZOs are of strong type (p,p) for all $1 < p < \infty$ with an operator norm of $O_{d,p}(1)$.
+\label{ex:czobds}
+\end{exr}
+\begin{rmk}
+There is a subtlety here, namely that we have proven that CZOs have a bounded extension from a dense subset and not the fact that that extension is given by a principal value integral. One can show fairly easily that the convergence holds in $L^p$ but to show that it holds pointwise, one needs to consider an appropriate maximal operator, namely
+\[
+T^* f(x) = \sup_{\epsilon > 0} |T_\epsilon f(x)|.
+\]
+This maximal operator is weak $(1,1)$ and strong $(p,p)$ for $1 < p < \infty$. This follows from
+\begin{prop}[Cotlar's inequality]
+Let $f \in \calS$, then 
+\[
+T^*f(x) \leq M(Tf)(x) + C Mf(x).
+\]
+\end{prop}
+The pointwise result now follows by Proposition \ref{prop:closedconv}.
+\end{rmk}
+\subsection*{Fourier multipliers}
+An important generalization of CZOs are Fourier multipliers and we will be able to recover CZOs as a special case.
+\begin{defn}
+If $m : \bbR^d \to \bbC$ is a tempered distribution, we define the Fourier multiplier $m(D): \calS \to \calS'$ on Schwartz functions $f \in \calS$ by the formula
+\[
+\widehat{m(D)f}(\xi) = m(\xi) \hat{f}(\xi).
+\]
+We refer to $m$ as the symbol of the multiplier $m(D)$.
+\end{defn}
+When $f$ is Schwartz, $m \hat{f}$ is a tempered distribution, and if $m$ is bounded we have
+\[
+\norm{m(D)f}_2 \leq \norm{m}_\infty \norm{f}_2
+\]
+and hence the Fourier multiplier extends continuous to all of $L^2$. We say that $m$ is an $L^p$ multiplier if $m(D)$ extends to $L^p$ and let $M^p$ denote the space of all such multipliers with the operator norm.
+\begin{ex}
+\begin{enumerate}
+\item The Hilbert transform is a fourier multiplier with symbol $i \textup{sgn}(\xi)$. In particular it is bounded on $L^2$.
+\begin{proof}
+The moral behind this identity is that
+\[
+Hf = f * \frac{1}{\pi x}
+\]
+hence
+\[
+\widehat{Hf}(\xi) = \hat{f}(\xi) \widehat{\frac{1}{\pi x}} (\xi).
+\]
+On the other hand
+\[
+\hat{1} (\xi) = \delta(\xi)
+\]
+so
+\[
+\widehat{\frac{1}{-2 \pi i x}}(\xi) = \frac{1}{2} \textup{sgn}(\xi).
+\] 
+We'll leave the proof at this -- the rigorous result follows from a contour integration argument.
+\end{proof}
+\item The Riesz transforms $R_j := i D_j / |D|$ have symbol $i \xi_j / |\xi|$. Note too that they can be written as convolution with
+\[
+K(x) = C\, p.v.\, \frac{x_j}{|x|^{d+1}}.
+\]
+\end{enumerate}
+\vspace{4mm}
+A particularly important example of Fourier multipliers are the Littlewood-Paley multipliers $P_N$ and $P_{< N}$ are of extreme importance as they are a key tool for decomposing functions in frequency space. First, we note that $P_{\leq N}$ is a convolution operator given by
+\[
+\widehat{P_{\leq N} f} (\xi) = \varphi(\xi/N) \hat{f}(\xi)
+\]
+There are several specific estimates available for these multipliers which fall under the title of  Bernstein inequalities. We present a couple of examples.
+\begin{prop}
+Let $s \geq 0$ and $1 \leq p \leq q \leq \infty$, then
+\begin{enumerate}
+\item[(i)] $\norm{P_{\geq N} f}_{L^p} \lle_{p,s,d} N^{-s} \norm{|\nabla|^s P_{\geq N} f }_{L^p}$
+\item[(ii)] $\norm{P_{\leq N} f}_{L^q} \lle_{p,s,d} N^{\frac{d}{p} - \frac{d}{q}} \norm{P_{\leq N} f }_{L^p}$
+\end{enumerate}
+\end{prop}
+\begin{rmk}
+When $N$ is small, then the cost of $N$ is actually a gain and Bestein's inequality is extremely useful.
+\end{rmk}
+\begin{proof}
+For the first inequality, we write
+\[
+P_{\geq N } f = \sum_{M \geq N} P_M f.
+\]
+Now,
+\[
+\norm{P_{\geq N } f}_p =\norm{ \sum_{M \geq N} P_M f}_p  \lle  \norm{\sum_{M \geq N} M^{-s} M^s P_M f}_p
+\]
+and we conclude by applying Cauchy-Schwartz to the inner sum and using that
+\[
+\norm{|\nabla|^{-s} P_{\geq N } f}_p \simeq \norm{(\sum_{M \geq N} | M^s P_M f|^2 )^{1/2}}_p.
+\]
+
+For the second inequality, note that $\widehat{P_N f}$ has support in $\{|\xi| \sim N\}$ and hence with $\chi$ the characteristic function of this set, we see that $\widehat{P_N f} = \chi \widehat{P_N f}$ which implies $P_N f = \check{\chi} * P_Nf$. Now apply Young's inequality.
+\end{proof}
+\end{ex}
+
+\noindent We also note that Littlewood-Paley multipliers behave no worse than local averages of a funcgtion.
+
+\begin{lem}
+For any $N \in \bbZ$, we have
+\[
+|P_{< N} f| \lle Mf(x).
+\]
+\end{lem}
+\begin{proof}
+We have
+\begin{align*}
+|P_{< k} f|  &= |\int f(y) 2^{dk} \check{\phi}(2^{dk}(x-y)) dy|\\
+& \lle \int |f(y)| 2^{dk}(1 + 2^k|x-y|)^{-100d} dy \\
+& \lle 2^{nk} \int_{B(x, 2^{-k})}|f(y)| dy + \sum_{j > 0} 2^{nk} 2^{-100dj} \int_{B(x,2^{-k+j})}|f(y) dy. \qedhere
+\end{align*}
+\end{proof}
+
+Now that we've treated these specific cases, we wish to say something about the boundedness of the multiplier even if $m$ is not bounded. If, for instance, $m$ is singular only at a point we can show (in some cases) that the multiplier operator is in fact a Calderon-Zygmund operator and thus conclude quite a lot about its behaviour on $L^p$ for various $p$. This is the content of the next theorem.
+\begin{thm}[H\"ormander Mikhlin multiplier theorem]
+Let $m: \bbR^d \to \bbC$ obey the homogeneous symbol estimates of order $0$
+\[
+|\nabla^k m(\xi)| \lle |\xi|^{-k}
+\]
+for all $\xi \neq 0$ and $0 \leq k \leq d+2$. Then $m$ is a CZO with $\|m\|_{M^p} \lle_{p,d} 1$ for all $1 < p < \infty$.
+\label{thm:hmmult}
+\end{thm}
+\begin{exr}
+Prove Theorem \ref{thm:hmmult}.
+\begin{enumerate}
+\item[(1)] Use a Littlewood-Paley decomposition $1 = \sum_j \psi_j(\xi)$ and conclude that
+\[
+m(D) f = \sum_{j} m_j(D) f
+\]
+where $m_j = \psi_j m$.
+\item[(2)] Justify the formula
+\[
+\brac{m_j(D)f,g} = \int \int K_j(y-x) f(x) g(y) dx dy
+\]
+where
+\[
+K_j(x) = \int m_j(\xi) e^{2 \pi i x \cdot \xi} d\xi.
+\]
+\item[(3)] Use the bounds $|\nabla^k m_j(\xi)|\lle 2^{-jk}$, the fact that $m_j$ is localized to $|\xi| \sim 2^j$ and integration by parts to obtain the bound
+\[
+|K_j(x)| \lle_d 2^{dj} 2^{-jk} |x|^{-k}.
+\]
+Conclude that
+\[
+| K_j(x)| \lle_d \min(2^{dj}, 2^{dj}2^{-j(d+2)} |x|^{-(d+2)})
+\]
+Similarly, by multiplying by $2 \pi i \xi$, obtain the bound
+\[
+|\nabla K_j(x)| \lle_d \min(2^{dj}, 2^{dj}2^{-j(d+2)} |x|^{-(d+2)}).
+\]
+\item[(4)] Conclude
+\[
+|K(x)| \lle_d |x|^{-d}, \qquad |\nabla K(x)| \lle_d |x|^{-d -1}.
+\]
+and hence by Fubini's
+\[
+\brac{m(D)f, g} = \int \int K(x-y) f(x) g(y),
+\]
+for $f, g \in L^2_c$.
+\item[(3)] Use Exercise \ref{ex:czobds} to finish the proof.
+\end{enumerate}
+\end{exr}
+\begin{rmk}
+Note that the H\"ormander-Mikhlin multiplier theorem includes $L^p$ boundedness of the Hilbert transform for $1< p < \infty$ as a special case. Another useful application is to homogeneous fractional derivatives. Indeed, $|2 \pi D|^{it}$, with symbol $|2 \pi \xi|^{it}$ are bounded on $L^p$ with an operator norm of $O_d(\brac{t}^{d+2})$.
+\end{rmk}
+\begin{ex}
+The Riesz transforms $R_j = i D_j / |D_j|$ obey the homogeneous symbol estimates and are thus bounded on $L^p$ for all $1 < p < \infty$. These operators are significant because of their role in connecting the Laplacian to partial derivatives, namely
+\[
+\frac{\partial^{2}}{\partial_j \partial_k} f = - R_j R_k \Delta f.
+\]
+In particular, elliptic regularity is a consequence of the $L^p$ boundedness of $R_j R_k$, namely that
+\[
+\norm{\nabla^2 f}_{L^p} \lle_{d,p} \norm{\Delta f}_{L^p}.
+\]
+Similarly, we can prove the homogeneous estimates using the multiplier $|\nabla|^k$.
+\end{ex}
+
+%We now return to the topic of multiplier operators. 
+\vspace{4mm}
+\noindent Finally, we present the folowing propositiong which proves helpful with calculations.
+\begin{prop}
+Let $m$ be a multiplier of order $0$ and let $K$ be the distribution whose fourier transform is $m$. Then $K$ agrees with a function $K(x)$ away from the origion that is $\calC^\infty$ and which satisfies
+\[
+|\partial_x^\alpha  K(x)| \lle_\alpha |x|^{-n-|\alpha|}.
+\]
+\label{prop:pseudomult}
+\end{prop}
+The proof of this statement is another lovely application the Littlewood-Paley decomposition, as seen above.
+\begin{exr}
+Prove Proposition \ref{prop:pseudomult}.
+\begin{enumerate}
+\item[(1)] Use the dyadic decomposition to write
+\[
+m(\xi) = \sum_{j \in \bbZ} m(\xi) \delta(2^{-j} \xi) = \sum_{j \in \bbZ} m_j(\xi).
+\]
+Set
+\[
+K_j(x) = \int m_j(\xi) e^{2 \pi i x \cdot \xi}
+\]
+and argue that it suffices to estimate $\sum_j |\partial^\alpha K_j(x)|$.
+\item[(2)] Show that
+\[
+|\partial_x^\alpha K_j(x)| \lle_{M,\alpha} |x|^{-M} 2^{j(d + |\alpha| - M)}.
+\]
+It might help to refer back to Exercise 7.
+\item[(3)] Conclude as in the previous exercise.
+\end{enumerate}
+\end{exr}
+
+
+\noindent In our treatment of Calderon-Zygmund operators, $L^2$ boundedness was an important assumption. Even if we don't assume it a priori, the following theorem gives a necessary and sufficient criterion for it to hold.
+
+\begin{thm}[T1 Theorem]
+Let $K$ be a bounded and compactly supported singular kernel and $T$ the corresponding integral operator. Then $T$ is bounded on $L^2$ if and only if $T1 \in$ BMO, $T^*1 \in$ BMO and $T$ satisfies the weak boundedness property, namely for any ball $B$
+\[
+\brac{T\textbf{1}_B, \textbf{1}_B} = O_d(|B|)
+\]
+\end{thm}
+
+\newpage
+{\noindent\Large Littlewood-Paley inequality two ways}
+\vspace{6mm}
+
+First we delve into the definitions of the vector-valued analogues of those concepts introduced in the previous notes. In general, let $H$ be a Hilbert space, then for $p < \infty$, we let $L^p(X \to H)$ be the space of measurable functions $f:X \to H$ such that
+\[
+\int_X \norm{f(x)}^p_{H} d\mu(x) < \infty
+\]
+with the usual identification of functions which agree almost everywhere and define $L^\infty(X \to H)$ in the usual way.
+\begin{defn}[Vector valued singular kernels] Let $H, H'$ be Hilbert spaces. A singular kernel from $H$ to $H'$ is a function $K: \bbR^d \times \bbR^d \to B(H\to H')$ (defined away from the diagonal) which obeys the estimate
+\[
+\norm{K(x,y)}_{B(H \to H')} \lle |x-y|^{-d}
+\]
+for $x \neq y$ and the H\"older type regularity estimated
+\[
+\norm{K(x,y') - K(x,y)}_{B(H \to H')} = O \left( \frac{|y-y'|^\sigma}{|x-y|^{\sigma+d}} \right), \quad \textup{when } |y-y'| \leq \frac{1}{2} |x-y|
+\]
+and
+\[
+\norm{K(x',y) - K(x,y)}_{B(H \to H')} = O \left( \frac{|x-x'|^\sigma}{|x-y|^{\sigma+d}} \right), \quad \textup{when } |x-x'| \leq \frac{1}{2} |x-y|
+\]
+\end{defn}
+\begin{defn}[Vector valued Calder\'on-Zygmund operaors]
+A Calder\'on-Zygmund operaor is a bounded linear operator $T : L^2(\bbR^d \to H) \to L^2(\bbR^d \to H')$ such that there exists a vector valued singular kernel $K$ for which
+\[
+Tf(x) = \int K(x,y) f(y) dy
+\]
+whenever $f \in L^2$ is compactly supported and $x \not\in \textup{supp} f$. Note that this is an absolutely convergent Hilbert space valued integral.
+\end{defn}
+As before, one has that vector-valued CZOs are bounded from $ L^p(\bbR^d \to H) \to L^p(\bbR^d \to H')$ with bound $O_{d,p}(1)$. It is important to remark that the implied constants do not depend on the dimension of $H$ or $H'$ which will (usually) be infinite.
+
+Given vector-valued Calder\'on-Zygmund theory, one can prove the Littlewood-Paley inequality.
+\begin{thm}[Upper Littlewood-Paley inequality]
+ For each integer $j$, let $\psi_j: \bbR^d \to \bbC$ be a bump function adapted to an annulus $\{|\xi| \sim 2^j\}$. Then for any $1 < p < \infty$, $f \in L^p$ we have
+ \[
+ \norm{(\sum_{j} |\psi_j(D) f|^2 )^{1/2} } \lle_{p,d} \norm{f}_{L^p(\bbR^d)}.
+ \]
+ \label{thm:lilpal}
+\end{thm}
+ \begin{exr}
+Prove the Littlewood-Paley inequality.
+\begin{enumerate}
+\item[(1)] Reduce to the case where only finitely many of the $\psi_j$ are nonzero.
+\item[(2)] Define $T: L^2(\bbR^d) \to L^2(\bbR^d \to \ell^2(\bbZ))$ by
+\[
+Tf := (\psi_j(D)f)_{j \in \bbZ}.
+\]
+and show that $T$ is bounded on $L^2$.
+\item[(3)] Write down a vector-valued Kernel for $T$ and conclude as in the proof of the H\"ormander-Mikhlin multiplier theorem.
+\end{enumerate}
+\end{exr}
+One can use randomized signs as a substitute for vector valued CZO theory. The following theorem should be seen as a variant of the law of large numbers.
+\begin{thm}[Khinchine's inequality for scalars]
+Let $x_1, \ldots, x_N$ be complex numbers and let $\epsilon_1, \ldots \epsilon_N \in \{-1,1\}$ be iid Bernoulli. Then for any $0 < p < \infty$ we have
+\[
+(\bbE|\sum_j \epsilon_j x_j|^p)^{1/p} \sim_p (\sum_j |x_j|^2)^{1/2}
+\]
+\end{thm}
+\begin{exr}
+Prove Khinchine's inequality. (Hint: Consider the random variable $\exp \left( \sum_j x_j \epsilon_j \right)$.
+\end{exr}
+\begin{cor}[Khinchine's inequality for functions]
+Let $f_1, \ldots, f_N \in L^p$ be for $0 < p < \infty$ and let $\epsilon_1, \ldots \epsilon_N \in \{-1,1\}$ be iid Bernoulli. Then for any $0 < p < \infty$ we have
+\[
+(\bbE \norm{\sum_j \epsilon_j f_j}_{L^p}^p)^{1/p} \sim_p \norm{(\sum_j |f_j|^2)^{1/2}}_{L^p}
+\]
+\end{cor}
+\begin{proof}
+Exercise.
+\end{proof}
+\begin{exr}
+Prove Theorem \ref{thm:lilpal}.
+\begin{enumerate}
+\item[(1)] Once again restrict to only finitely many $\psi_j \neq 0$.
+\item[(2)] For $\epsilon_j$ as before, show that $\sum \epsilon_j \psi_j $ obeys the homogeneous symbol estimates of order $0$.
+\item[(3)] Apply H\"ormander-Mikhlin, take expectations and use Khinchine's inequality.
+\end{enumerate}
+\end{exr}
+\newpage
+
+{\noindent\Large Pseudodifferential operators}
+\vspace{6mm}
+
+We will now turn to pseudodifferential operators, which generalize variable coefficient differential operators. As a first example, consider the Fourier inversion formula
+\[
+f(x) = \int e^{2 \pi i x \cdot \xi} \hat{f}(\xi) d\xi,
+\]
+for $f \in \calS$, say.
+\begin{exr}
+Show that for a variable coefficient differential operator with smooth coefficients $c_\alpha$ we have
+\[
+\sum_\alpha c_\alpha(x) \partial_x^\alpha f(x) = \int a(x,\xi) e^{2 \pi i x \cdot \xi} \hat{f}(\xi)
+\]
+for some $a(x, \xi)$. Compute the exact form of $a$.
+\end{exr}
+\begin{defn}
+The function $a: \bbR^d \times \bbR^d \to \bbC$ is called the symbol. For any smooth symbol of at most polynomial growth, the operator $a(X,D)$ is defined by the formula
+\[
+a(X,D) f(x) := \int a(x,\xi) e^{2 \pi i x \cdot \xi} \hat{f}(\xi) d \xi.
+\]
+The operator $a(X,D)$ is called the Kohn-Nirenberg quantization of the symbol $a(x,\xi)$.
+\end{defn}
+Ultimately, our aim is to study the qualitative properties of such operators. To do so, we place $a$ into a symbol class. We will stick to the standard symbol classes $S^k = S_{0,1}^k$ which suffice for our needs.
+\begin{defn}[Standard pseudifferential operators] A smooth symbol $a:\bbR^d \times \bbR^d \to \bbC$ is a (standard) inhomogeneous symbol of order $k$ for some $k \in \bbR$ if we have the estimate
+\[
+|\partial_x^\alpha \partial_\xi^\beta a(x,\xi)| \lle_{\alpha,\beta,d,k} \brac{\xi}^{k - |\beta|}
+\]
+Replacing $\brac{\xi}$ with $|\xi|$, we have the definition for a homogeneous symbol.
+\end{defn}
+
+\begin{exr}
+Show that for smooth $a$ with compact support one has the expression
+\[
+a(X,D)f(x) = \int \left[\int a(x,\xi) e^{2 \pi i(x-y) \cdot \xi} d\xi \right]f(y) dy.
+\]
+\end{exr}
+The asymmetry between $x$ and $y$ in this expression prompts the use of the Weyl quantization
+\[
+a^w(X,D)f(x) = \int \left[\int a\left(\frac{x+y}{2},\xi \right) e^{2 \pi i(x-y) \cdot \xi} d\xi \right]f(y) dy
+\]
+and in fact, we do not lose too much by restricting ourselves to one of these quantizations:
+\begin{exr}
+If $a$ is a symbol of order $k$ then $a^w(X,D) = a(X,D) + b(X,D)$ and $a(X,D) = a^w(X,D) + c(X,D)$ for $b$ and $c$, symbols of order $k-1$. That is, the two quantizations are equivalent modulo lower order operators.
+\end{exr}
+%It is convenient at this point to prove some technical results regarding Littlewood-Paley decompositions. Let $\psi_j$ be a bump function adapted to $\{|\xi| \sim 2^j\}$ and let $1 = \sum_j \psi_j(\xi)$. Then
+%\[
+%\varphi_
+%\]
+Now we turn to our first main result.
+\begin{thm}
+Let $a$ be a symbol of order $0$. Then $a(X,D)$ defined on $\calS$ extends to a bounded operator on $L^2$.
+\label{thm:l2bdd}
+\end{thm}
+\begin{exr}
+Prove Theorem \ref{thm:l2bdd}.
+\begin{enumerate}
+\item[(1)] Argue that it suffices to show
+\[
+\norm{a(X,D)(f)}_{L^2} \lle \norm{f}_{L^2} ,\quad f\in \calS.
+\]
+\item[(2)]  First argue when $a(x, \xi)$ has compact support. Show that in this case
+\[
+\sup_\xi |\hat{a}(\lambda, \xi)| \leq A_N\brac{\lambda}^{-N}
+\]
+for any $N \geq 0$.
+\item[(3)] Derive the expression
+\[
+(a(X,D) f)(x) = \int (T^\lambda f)(x) d\lambda
+\]
+for
+\[
+(T^\lambda f)(x) = e^{2 \pi i x \cdot \lambda} (\hat{a}(\Lambda,D) f)(x).
+\]
+and argue by Plancherel that $\|T^\lambda\| \leq A_N \brac{\lambda}^{-N}$. Conclude by getting bounds on $a(X,D)$.
+\end{enumerate}
+
+To take up the case of more general symbols, we wish to write $a(X,D)$ as an integral operator with kernel $K(x,y)$, that is
+\[
+(a(X,D) f)(x) = \int_{\bbR^d} K(x,y) f(y)dy
+\]
+with $K(x, \cdot) = \check{a}(x, \cdot)$. We will show that $K(x, \cdot)$ agrees with a rapidly decreasing function away from the diagonal $x = y$. Later we will prove more delicate estimates on $K$ but for now, the estimate
+\begin{align}
+|K(x,y)| \lle_N |x-y|^{-N}
+\label{eq:diag}
+\end{align}
+for all $N \geq 0$ and $|x-y| \geq 1$ will suffice.
+\begin{enumerate}
+\item[(4)] Prove \eqref{eq:diag}. (Hint: Observe that 
+\[
+(-2 \pi i (x-y))^\alpha K(x, \cdot) = \widecheck{\partial_\xi^\alpha} a(x,\xi)
+\]
+and by the fact that $a$ is a symbol of order $0$, $\partial_\xi^\alpha a(x,\xi)$ is integrable when $ |\alpha| \geq n +1$. Conclude that $|x-y|^N|K(x,y)| \lle_N 1$ when $N > n$).
+\end{enumerate}
+Now we return to the proof of the theorem when $a(x,\xi)$ doesn't have compact support. Morally, since we know that if we truncate a symbol of order $0$ by a smooth cutoff function it remains a symbol of order $0$, we should be able to conclude with various limiting arguments (so long as our bounds do not depend on the size of the support of $a(x, \xi)$). 
+
+We flesh out some more details. Our goal will be to show that for each $x_0 \in \bbR^d$, 
+\begin{align}
+\int_{|x-x_0| \leq 1} |(a(X,D) f)(x)|^2 \lle_N \int \frac{|f(x)|^2}{\brac{x-x_0}^N}
+\label{eq:intest}
+\end{align}
+for all $N \geq 0$.
+\begin{enumerate}
+\item[(5)] Write $f= f_1 + f_2$, $f_1$ having support in $B(0,3)$, $f_2$ with support outside $B(0,2)$. Use a smooth cutoff to reduce the term $a(X,D)(f_1)$ to the previously handled compactly suppported symbol case.
+\item[(6)] Note that for $x \in B(1)$, we can represent $a(X,D)(f_2)$ as an integral and invoke the extimate \eqref{eq:diag} to conclude that
+\[
+\int_{B(1)} |(a(X,D) f)(x)|^2 dx \lle_N \int |f(x)|^2 (1 + |x|)^{-N} dx.
+\]
+\item[(7)] Argue that it suffices to prove the estimate for $x_0 = 0$. You might want to prove that the class of pseudodifferential operators are translation invariant. Observe that one can replace $a(x,\xi)$ by $a(x-h,\xi)$ in the estimate with bounds independent of $h$. Now integrate \eqref{eq:intest} with respect to $x_0$ to obtain the required $L^2$ estimate.
+\end{enumerate}
+\end{exr}
+The previous result may hint at the first step towards proving $L^p$ estimates (along the lines of those treated in Calder\'on-Zygmund theory) and indeed that is the case. We proceed to the basic estimate for pseudodifferential operators which should be compared to the H\"ormander Mikhlin multiplier theorem from the previous chapter.
+\begin{thm}[Calder\'on-Vaillancourt theorem]
+Every pseudodifferential operator of order $0$ is a CZO. In particular, it is bounded on $L^p$ with $1 < p \leq \infty$.
+\label{thm:cv}
+\end{thm}
+\begin{exr}
+Prove Theorem \ref{thm:cv}. Hints: Recall Calder\'on-Zygmund operator theory: we have to check that $a(X,D)$ is bounded on $L^2$ and that $a(X,D)$ has a singular kernel. We have already proven the $L^2$ boundedness in Theorem \ref{thm:l2bdd} so it remains to check the singular kernel property. We can (due to various limiting arguments) restrict ourselves to the case where $a(x,\xi)$ has compact support (check this).
+\begin{enumerate}
+\item[(1)] Use Fubini's to write
+\[
+\int_{\bbR^d} a(X,D) f(x) \overline{g(x)} dx = \int \int K(x,y) dx dy.
+\]
+where
+\[
+K(x,y) = \int a(x,\xi) e^{2 \pi i (x-y) \cdot \xi} d\xi
+\]
+and since $a(x,\xi)$ is a symbol of order $0$ for any fixed $x$, show that
+\[
+|K(x,y)| \lle |x-y|^{-d}, \quad \textup{and} \quad |\nabla_y K(x,y)| \lle_d |x-y|^{-d -1}.
+\]
+\item[(2)] To get the $x$ derivate, note that
+\[
+(\nabla_x + \nabla_y) K(x,y) = \int (\nabla_x a)(x,\xi)  e^{2 \pi i (x-y) \cdot \xi}  d\xi
+\]
+and show that
+\[
+|(\nabla_x + \nabla_y) K(x,y)| \lle_N |x-y|^{-d} \brac{x-y}^{-N}
+\]
+for every $N \geq 0$.
+\end{enumerate}
+\end{exr}
+\subsection*{Pseudodifferential calculus}
+We now turn to the topic of performing algebraic operations on pseudodifferential operators. In particular, we study the effect of composition and taking a formal adjoint. Reassuringly, these operations act as one would expect and, up to lower order corrections, we have simple, precise, formulas. We begin by looking at compositions of $\Psi DOs$.
+\begin{lem}[Composition of $\Psi DOs$]
+Suppose $a(X,D)$ and $b(X,D)$ are pseudodifferential operators of order $k$, $k'$ respectively. Then $a(X,D)b(X,D) =: c(X,D)$ is a pseudodifferential operators of order $k + k'$ with symbol $c$ satisfying
+\[
+c - \sum_{|\alpha| < N} \frac{(2\pi i)^{-|\alpha|}}{\alpha!} (\partial_\xi^\alpha a) \cdot( \partial_x^\alpha b) \in S^{k + k' - N}
+\]
+for all $N > 0$.
+\label{lem:comp}
+\end{lem}
+\begin{exr}
+Prove Lemma \ref{lem:comp}.
+\begin{enumerate}
+\item[(1)] By a limiting argument, reduce to the case where $a,b$ are compactly supported.
+\item[(2)] Obtain the expression
+\[
+a(X,D)b(X,D) = \int c(x, \xi) e^{2 \pi i (x-y) \cdot \xi} f(y) dy d\xi
+\]
+with
+\[
+c(x, \xi) = \int a(x,\eta ) b(y,\xi) e^{2 \pi i (x-y) \cdot (\eta - \xi)} dy d\xi.
+\]
+Carry out integration in the $y$ variable to obtain
+\[
+c(x, \xi) = \int a(x, \xi+ \eta) \hat{b}(\eta,\xi) e^{2 \pi i x \cdot \eta} d\eta
+\]
+\item[(3)] Recalling that $b$ is assumed to have compact support and that it is a symbol of order $k'$, conclude that
+\[
+|\hat{b}(\eta,\xi)| \lle_{M} \brac{\eta}^{-M} \brac{\xi}^{k'}
+\]
+for all $M > 0$. (Hint: Integrate by parts and ignore boundary terms).
+\item[(4)] Use Taylor's formula and write
+\[
+a(x, \xi+ \eta) = \sum_{|\alpha| < N} \frac{1}{\alpha!} \partial_\xi^\alpha a(x,\xi)\eta^\alpha  + R_N(x,\xi,\eta),
+\]
+for a suitable remained $R_N$. Use the Fourier inversion formula to conclude that each term has the form
+\[
+\frac{(2\pi i)^{-|\alpha|}}{\alpha!} (\partial_\xi^\alpha a) \cdot( \partial_x^\alpha b)
+\]
+\item[(5)] It remains to estimate the size of the remainder. Using Taylor's theorem and the derivative estimated on $b$ show that
+\[
+|R_N(x,\xi,\eta)| \lle_N |\eta|^N \brac{\xi}^{k-N}, \quad |\xi| \geq 2 |\eta|
+\]
+and
+\[
+|R_N(x,\xi,\eta)| \lle_N |\eta|^N,
+\]
+provided $N > k$.
+\item[(6)] Show that 
+\[
+\left|c - \sum_{|\alpha| < N} \frac{(2\pi i)^{-|\alpha|}}{\alpha!} (\partial_\xi^\alpha a) \cdot( \partial_x^\alpha b)\right| \lle_{M,N} \brac{\xi}^{k+k' - N} \int \brac{\eta}^{-M} |\eta|^N d\eta + \brac{\xi}^{k'} \int_{2|\eta| \geq |\xi|}  \brac{\eta}^{-M} |\eta|^N d\eta
+\]
+and choose $M$ large enough to obtain the zeroth order estimate. Apply $\partial_x^\beta \partial_\xi^\alpha$ and estimate this as well to obtain the result.
+\end{enumerate}
+\end{exr}
+\subsection*{Singular integral realization}
+Since we've put so much work into understanding singular integral operators, we wish to, if possible, reap some rewards when studying pseudodifferential operators. That is, we wish to write
+\[
+a(X,D)f = \int K(x,y) f(y) dy
+\]
+where $K(x,\cdot)$ is the distribution of the inverse Fourier transform of $a(x,\xi)$. Recall that the above expression is meant to hold for $x$ outside the support of $f$ and that $K(x,\cdot)$ agrees with a function $K(x,y)$ away from the diagonal. We have
+\begin{prop}
+Suppose $a \in S^k$. Then $K(x,y)$ in is $\calC^\infty(\bbR^d \times \bbR^d \backslash \{0\})$ and satisfies
+\[
+|\partial_x^\beta \partial_y^\alpha K(x,y)| \lle_{\alpha,\beta,N} |x-y|^{-d-k-|\alpha| -N}
+\]
+for all $\alpha, \beta$ and all $N \geq 0$ such that $d+k+|\alpha| +N > 0$.
+\label{prop:singker}
+\end{prop}
+
+First we take a look at the Littlewood-Paley decomposition in the context of pseudodifferential operators. It turns out to be an extremely useful tool once all the bookkeeping has been taken care of. We begin by fixing $\eta \in \calC_c^\infty$, a bump function adapted to $|\xi| \lle 2$. Define another function $\delta$ by
+\[
+\delta(\xi) = \eta(\xi) - \eta(2\xi).
+\]
+Check that
+\[
+1 = \eta(\xi) + \sum_{j \geq 1} \delta(2^{-j} \xi)
+\]
+and 
+\[
+1 = \sum_{j \in \bbZ} \delta(2^{-j} \xi).
+\]
+We can now write
+\[
+a(X,D)f = \sum_{j=0}^\infty a_j(X,D) f
+\]
+where
+\[
+(a_j(X,D) f)(x) = \int K_j(x,y) f(y) dy
+\]
+with
+\[
+K_j(x,y) = \int a_j(x,\xi) e^{2 \pi i \xi \cdot y} dy
+\]
+for $a_j(x, \xi) = \delta(2^{-j} \xi) a(x,\xi)$.
+We can prove the following estimates for these kernels.
+\begin{lem}
+Let $a \in S^k$. Then
+\[
+|\partial_x^\beta \partial_y^\alpha K_j(x,y)| \lle_{M, \alpha, \beta} |x-y|^{-M} \cdot 2^{j(d+m-M+|\alpha|)}
+\]
+\label{lem:ests}
+\end{lem}
+\begin{exr}
+Prove Lemma \ref{lem:ests}. (Hint: write
+\[
+(-2 \pi i (x-y))^\gamma \partial_x^\beta \partial_y^\alpha K_j(x,y) = \int \partial_\xi^\gamma[(2\pi i \xi)^\alpha \partial_x^\beta a_j(x,\xi)] e^{2 \pi i \xi \cdot (x-y)} d\xi.
+\]
+Use Liebniz rule to deal with the derivative and then the derivative estimates on $a$. Recall that $a_j$ is supported on the annulus $|\xi| \sim 2^j$ (which has volume bounded by $2^{dj}$) and conclude that the integrand is bounded by a multipled of $2^{j(m + |\alpha| - |\gamma|)}$, then put this all together to conclude).
+\end{exr}
+\begin{exr}
+Prove Proposition \ref{prop:singker}.
+\begin{enumerate}
+\item[(1)] Reduce to proving that
+\[
+\sum_{j \geq 0} |\partial_x^\beta \partial_y^\alpha K_j(x,y)|
+\]
+satisfis the estimate. We divide this sum into three parts: $1 \geq |x-y|^{-1} \geq 2^j$, $|x-y|^{-1} < 2^j$, and $|x-y| \geq 1$. Now let $N \geq 0$.
+\item[(2)] For the first part, use Lemma \ref{lem:ests} with $M= 0 $.
+\item[(3)] For the second part, use Lemma \ref{lem:ests} with $M > n+ m+|\alpha| $.
+\item[(3)] For the third part, use Lemma \ref{lem:ests} with $M > n +m+|\alpha| + N $.
+\end{enumerate}
+\end{exr}
+
+\newpage
+
+{\noindent\Large Sobolev spaces and their embeddings}
+\vspace{6mm}
+\begin{defn}[Sobolev norms]
+Let $1 < p < \infty$ and $s \in \bbR$. If $f \in \calS(\bbR^d)$, define the inhomogeneous Sobolev norms by
+\[
+\norm{f}_{W^{s,p}}:= \norm{\brac{\nabla}^s f}_{L^p}
+\]
+and define $W^{s,p}$ to be the closure of the Schwartz functions under this norm. Similarly, define the homogeneous Sobolev norm by
+\[
+\norm{f}_{\dot W^{s,p}}:= \norm{|\nabla|^s f}_{L^p}
+\]
+\end{defn}
+It should be noted that the latter norms have the advantage that they behave well under dilations, however they have the drawback that for very low regularity, the operator $|\nabla|^s$ may not even be well-defined distributionally.
+One can prove the Littlewood-Paley characterization of the Sobolev spaces: 
+\begin{prop}
+Let $1 < p < \infty$ and $s \in \bbR$. Then for any $f \in W^{s,p}$ we have
+\[
+\norm{f}_{W^{s,P}} \sim_{s,p,d} \norm{P_{\leq 1} f}_{L^p} + \norm{(\sum_{j=1}^\infty 2^{2js} |P_jf|^2)^{1/2}}_{L^p}.
+\]
+\end{prop}
+\begin{proof}
+It suffices to prove the claim for Schwartz functions. The first piece gives us no trouble so we focus on the second term. We substitute $g= \brac{\nabla}^s f$, hence we must show that
+\[
+\norm{(\sum_{j=1}^\infty 2^{2js} |P_j\brac{\nabla}^s f|^2)^{1/2}}_{L^p} \lle \norm{f}_{L^p}
+\]
+Now observe that $2^{2js} P_j \brac{\nabla}^{-s}$ is a fourier multiplier whose symbol is adapted to $\{|\xi| \sim 2^{2js}\}$, namely, this multiplier is not too different from $P_j$. Thus, we can apply the Littlewood-Paley inequality to conclude the proof. 
+\end{proof}
+\begin{rmk}
+When $p=2$, one can take advantage of Plancherel and the Fourier inversion formula to conclude that
+\[
+\norm{f}_{H^s} \sim \norm{\brac{\xi}^s \hat{f}}_{L^2}.
+\]
+\end{rmk}
+We will recall two inequalities which give us a nice, quick proof of the Sobolev embedding theorems. First, 
+\begin{thm}[Gagliardo-Niremberg inequality]
+Let $2 \leq q \leq \infty$ and let $\theta \in (0,1)$ be such that $\frac{1}{q} = \frac{1}{p} - \frac{\theta s}{d}$ Then for all $u \in H^s(\mathbb{R}^d)$, we have
+\[
+\|u\|_{L^q} \leq C(d,q,s) \|u\|_{L^p}^{1-\theta} \|u\|_{\dot W^{s,p}}^\theta.
+\]
+\end{thm}
+\begin{proof}
+Since the inequality is invariant under homogeneity and scaling, we may nomalise to $\norm{u}_{L^p} = \norm{W^{s,p}} = 1$. By the LIttlewood-Paley Decomposition, we have that
+\[
+\|u\|_{L^q} = \| \sum_{N \in 2^{\mathbb{Z}}} P_N u\|_{L^q}  \leq \sum_{N \in 2^{\mathbb{Z}}} \| P_N u\|_{L^q} .
+\]
+By Bernstein's Inequality we have
+\[
+\|u\|_{L^q} \leq \sum_{N \in 2^{\mathbb{Z}}} CN^{\frac{d}{2} - \frac{d}{2}}\| P_N u\|_{L^2} =  C \sum_{N \in 2^{\mathbb{Z}}} N^{\theta s} \| P_N u\|_{L^2}.
+\] 
+hence by the Littlewood Paley Inequality we have that that
+\[
+\| P_N u\|_{L^2} \leq C N^{-s} \|u\|_{\dot H^s}.
+\]
+However, we may also estimate
+\[
+\| P_N u\|_{L^2} \leq C \|u\|_{L^2}
+\]
+hence
+\[
+\|u\|_{L^q} \leq C \sum_{N \in 2^{\mathbb{Z}},\; N<1 } N^{\theta s}\|u\|_{L^2} + C \sum_{N \in 2^{\mathbb{Z}},\; N\geq1 } N^{\theta s-s}\|u\|_{\overset{\cdot}{H^s}} = C \left(\sum_{N \in 2^{\mathbb{Z}},\; N <1 } N^{\theta s} + \sum_{N \in 2^{\mathbb{Z}},\; N\geq1 } N^{\theta s-s} \right).
+\]
+Now note
+\[
+\sum_{N \in 2^{\mathbb{Z}},\; N <1 } N^{\theta s} = \sum_{j=1}^\infty \left( \frac{1}{2^{\theta s}} \right)^j \lle_{d,q,s} 1
+\]
+since $\theta$ is determined by the relation above, and similarly for the second sum, hence we obtain
+\[
+\|u\|_{L^q}  \lle_{d,q,s} 1
+\]
+as required.
+\end{proof}
+We also recal the Hardy-Littlewood-Sobolev theorem of fractional integration which states that whenver $1 < p< q < \infty$ and $0 < \alpha < d$ obey the scaling condition $\frac{1}{p} = \frac{1}{q} + \frac{d- \alpha}{d}$.
+\[
+\norm{f * \frac{1}{|x|^\alpha}}_{L^q} \lle_{p,q,d} \norm{f}_{L^p}.
+\]
+This estimate does not follow immediately from the general Young's inequality as $|x|^{-\alpha}$ does not belong to any $L^p$. However, one can in fact show that Young's inequality holds when the kernel only satisfies weak-$L^p$ bounds, as this one does.
+\begin{thm}[Sobolev embedding]
+Let $1 < p < q < \infty$ and $s > 0$ obey the scaling condition $\frac{1}{p} = \frac{1}{q} + \frac{s}{d}$. Then
+\[
+\norm{f}_{L^q} \lle_{p,q, s,d} \norm{f}_{\dot W^{s,p}}.
+\]
+Further, one has the inhomogeneous estimate whenever $1 < p < q < \infty$ and $s > 0$ is such that $\frac{1}{p} \leq \frac{1}{q} + \frac{s}{d}$. 
+\end{thm}
+\begin{proof}
+The first claim follows from the equality
+\[
+|\nabla|^{-s} d \simeq |x|^{s-d} * f
+\]
+and the second follows from Gagliardo-Niremberg and writing $\frac{1}{p} = \frac{1}{q} + \frac{\theta s}{d}$ for $\theta \in (0,1)$.
+\end{proof}
+
+When $s > d/2$ and $f$, we have the $q= \infty$ case of the embedding theorems, namely that $f \in W^{s,p}$ is bounded and continuous with
+\[
+\norm{f}_{L^\infty} \lle_{p,s,q,d} \norm{f}_{W^{s,p}}.
+\]
+This follows from the fact that $\brac{x}^{-s}$ is square integerable in this case. We can cover all our bases, in fact, and prove two additional theorems at or near the endpoints.
+\begin{prop}[Endpoint Sobolev embedding] Let $1 < p < \infty$ and $s = d/p$. If $f \in \dot W{}^{s,p}$ then $f$ is bounded an continuous with
+\[
+\norm{f}_{\BMO} \lle_{d,p} \norm{f}_{\dot W^{s,p}} = \norm{|\nabla|^s f}_{p}
+\]
+\end{prop}
+\begin{proof}
+We proceed in the case of $p = 2$. Here we have
+\[
+\frac{1}{|B|}\int |f - f_B| dx \lle \norm{f - f_B}_{L^2(B,\frac{dx}{|B|})} \lle \norm{P_{\leq A}(f - f_B)}_{L^2(B,\frac{dx}{|B|})} + \frac{1}{|B|^{1/2}} \norm{P_{>A} f}_{L^2}.
+\]
+To deal with the first term, we use Taylor's theorem to write
+\[
+I:= \norm{P_{\leq A}(f - f_B)}_{L^2(B,\frac{dx}{|B|})} \leq R \norm{\nabla P_{\leq A} f}_{\infty} \lle C R \int |\xi|^{1-\frac{d}{2}} |\xi|^{d/2} |\widehat{P_{\leq A} f} | d\xi.
+\]
+By H\"older's inequality we then have
+\[
+I \lle_{p,d} R \norm{f}_{\dot W{}^{s,p}} \left( \int_{|\xi| \leq A} |\xi|^{2(1-\frac{d}{2}) } \right)^{1/2} \lle R A \norm{f}_{\dot W{}^{s,p}}.
+\]
+To deal with the second term, we have (writing $|B|$ in terms of the radius),
+\[
+\frac{1}{|R|^{d/2}} \left(\int_{|\xi| \geq A} |\hat{f}(\xi)|^2 d\xi \right)^{1/2} \leq \frac{1}{|AR|^{d/2}} \left(\int_{|\xi| \geq A} |\xi|^d |\hat{f}(\xi)|^2 d\xi \right)^{1/2} = (AR)^{-d/2} \norm{f}_{\dot W{}^{s,p}}.
+\]
+Taking $A = R^{-1}$, we conclude the proof.
+\end{proof}
+\begin{prop}[H\"older-Sobolev embedding] Let $1 < p < \infty$, $0 < \delta < 1$ and $s = d/p + \delta$. If $f \in \dot W^{s,p}(\bbR^d)$ then we have
+\[
+|f(x) - f(y) | \lle_{d,p,\delta} \norm{f}_{\dot W{}^{s,p}} |x-y|^\delta.
+\]
+\end{prop}
+\begin{proof}
+Similarly to our method in the previous problem, we divide $f$ into its low and high frequencies and estimate each piece separately. We have
+\[
+|f(x) - f(y)| \lle |x-y| \norm{\nabla P_{\leq A} f}_\infty + 2 \|P_{>A} f\|_\infty := I + II. 
+\]
+Then
+\[
+I \leq |x-y| \int_{|\xi| \leq A} |\xi||\hat{f}(\xi)| d\xi \leq \norm{f}_{\dot W{}^{s,p}} \left(\int_{|\xi| \leq A} |\xi|^{2 - d - 2\delta}\right) \lle A^{1-\delta} \norm{f}_{\dot W{}^{s,p}}.
+\]
+Next, we have
+\[
+II \lle \int_{|\xi| \geq A} |\hat{f}(\xi)| d\xi \lle \left(\int_{|\xi| \geq A} 
+|\xi|^{-d - 2\delta} \right)^{1/2}\norm{f}_{\dot W{}^{s,p}} \lle A^{-\delta} \norm{f}_{\dot W{}^{s,p}},
+\]
+and taking $A = |x-y|^{-1}$, we're done.
+\end{proof}
+To conclude, we state the Rellich-Kondrachov theorem which answers the question about when these embeddings are compact.
+\begin{thm}[Rellich-Kondrachov]
+Let $\Omega \subseteq \bbR^n$ be an open bounded Lipscitz domain, $1 \leq p < n$. Set
+$ p^* := \frac{np}{n-p}$. Then $W^{1,p} \subset\subset L^q$ for $1 \leq q \leq p^*$.
+\end{thm}
+\begin{proof}(Sketch)
+Given a sequence $\{u_m\}$ which is bounded in $W^{1,p}$ we wish to extract and $L^q$ convergence subseuqence.
+\begin{enumerate}
+\item Smooth the sequence and show the smoothed sequence converges uniformly in $L^q$.
+\item Show the sequence is uniformly bounded and equicontinuous.
+\item Appeal to Arzela-Ascoli and use a diagonal argument.
+\end{enumerate}
+\end{proof}
+\newpage
+{\noindent\Large Paraproducts}
+\vspace{6mm}
+
+Although our main focus thus far has been linear operators, a great deal of operators which arise naturally do not fall into this category. These multilinear and nonlinear operators are ubiquitous but we will focus on two of them: the pointwise product operator
+\[
+(f,g) \mapsto fg
+\]
+and the pointwise nonlinear operator
+\[
+f \mapsto F(f)
+\]
+where $F$ is a given function (e.g. NLS-type nonlinearity, etc.). We wish to answer questions of the usual type, such as given $f$ of a particular regularity, what can we say about the regularity of $F(f)$? Or how about given $f$ and $g$, what can we say about $fg$?
+
+The correct approach to these questions turns out to be (no surprise) the Littlewood-Paley decomposition which involves breaking up the expressions of these operators into components, called paraproducts.
+
+\begin{exr}
+For $f,g, h$ Schwartz functions and a reasonable symbol $m$, apply Fubini's theorem and Parseval to show that
+\[
+\int T_m(f,g) h = \int T_{m'}(g,h) f = \int T_{m''}(h,f) g
+\]
+where
+\[
+m'(\xi_2,\xi_3) := m(-\xi_2-\xi_3, \xi_2), \quad\textup{and} \quad m''(\xi_3, \xi_1) := m(\xi_1, - \xi_1 - \xi_3).
+\]
+In particular, note that we longer have only one candidate for the adjoint one example of how situations are more complicated with bilinear operators than linear ones.
+\end{exr}
+
+\subsection*{Coifman-Meyer multipliers}
+We start with the formula
+\[
+fg(x) = \int \int e^{2 \pi i x \cdot (\xi + \eta)} \hat{f}(\xi) \hat{g}(\eta) d\xi d\eta.
+\]
+It is natural now to define the bilinear multiplier $T_m$ on Schwarz functions, for $m: \bbR^d \times \bbR^d \to \bbC$ locally integrable, by the formula
+\[
+T_m(f,g)(x):= \int \int m(\xi,\eta) e^{2 \pi i x \cdot (\xi + \eta)} \hat{f}(\xi) \hat{g}(\eta) d\xi d\eta.
+\]
+As before, we refer to $m$ as the symbol of $T_m$. In the next theorem we will prove the analogue of the H\"ormander-Mikhlin multiplier theroem for bilinear Fourier multipliers. We first need a definition.
+
+\begin{defn}[Coifman-Meyer multipliers]
+A Coifman-Meyer symbol is a function $m : \bbR^d \times \bbR^d \to \bbC$ obeying the estimates
+\[
+|\nabla_\xi^{j} \nabla_\eta^k m(\xi,\eta)| \lle_{j,k,d} (|\xi| + |\eta|)^{-j-k}.
+\]
+for all $k, k \geq 0$. The corresponding $T_m$ are called Coifman-Meyer multipliers.
+\end{defn}
+We define high-high Coifman-Meyer multipliers when $|\xi| \sim |\eta|$ on the support of $m$ and similarly high-low and low-high mutlipliers.
+\begin{rmk}
+From the Liebniz rule, we see immediately that the product of two Coifman-Meyer symbols is still a Coifman-Meyer symbol. However, unlike in the linear case, multiplication of symbols does not have an immediate interpretation as the composition of operators, so this fact, while useful, is not as fundamental as it might seem. Transposes of Coifman-Meyer multipliers are still Coifman-Meyer multipliers, although this operation does necessarily preserve type.
+\end{rmk}
+We now arrive at a very useful decompostion lemma.
+\begin{lem}[Bony's paraproduct decompostion]
+Let $T_m$ be a Coifman-Meyer multiplier. Then we have the decomposition
+\[
+T_m(f,g) = \pi_{hh}(f,g) + \pi_{lh}(f,g) + \pi_{hl}(f,g)
+\]
+\label{lem:Bony}
+\end{lem}
+\begin{exr}
+Using a Littlewood-Paley decomposition, prove Lemma \ref{lem:Bony}.
+\end{exr}
+The key point is that by the triangle inequality, to estimate Coifman-Meyer multipliers, it suffices to estimate each type of paraproduct separately. We now focus on these estimates. Before diving in, we provide a useful lemma.
+\begin{lem}[Local constancy of band-limited functions]
+Let $j \in \bbZ$ and let $\psi_{\leq j}$ be a bump function adapted to a ball $\{|\xi| \lle 2^j\}$. Then
+\[
+|\nabla^k \psi_{\leq j}(D) f(y)| \lle_{k,d} 2^{jk} \brac{2^j(y-x)}^d Mf(x).
+\]
+\end{lem}
+\begin{proof}
+By translation and scaling, we take $x = 0$ and $j=0$. We thus must prove that
+\[
+| \int \nabla^k \check{\psi}_{\leq 0}(y-z) f(z) dz | \lle_{k,d} \brac{y}^d Mf(0).
+\]
+Using the estimate $\nabla^k \check{\psi}_{\leq 0}(y-z) = O_{k,d}( \brac{y-z}^{-100d})$, say, we reduce to showing that
+\[
+| \int \brac{y-z}^{-100d} f(z) dz | \lle_{k,d} \brac{y}^d Mf(0).
+\]
+The rest of the proof is left as an exercise.
+\end{proof}
+To estimate a product of two functions, H\"older's inequality is an indispensible tool. It is because of this that one would hope that similar estimates exist for paraproducts. In fact, we're in luck, and this is exactly the content of the Coifman-Meyer multiplier theorem.
+
+\begin{thm}[Coifman-Meyer multiplier]
+Let $T_m$ be a Coifman-Meyer multiplier. Then
+\[
+\norm{T_m(f,g)}_{L^r} \lle_{p,q,r,d} \norm{f}_{L^p} \norm{g}_{L^q}
+\]
+whenever $1 < p,q,r < \infty$ and $\frac{1}{r} = \frac{1}{p} + \frac{1}{q}$.
+\end{thm}
+Because of Bony's decomposition, we need only prove this theorem for the different types of paraproducts individually. We will outline the proof for the high-high paraproduct in the following exercise and the other cases will be left to the reader.
+
+\begin{lem}[High-high paraproducts]
+Let $\pi_{hh}$ be a high-high paraproduct. Then we have
+\[
+\norm{\pi_{hh}(f,g)}_{L^r} \lle_{p,q,r,d} \norm{f}_{L^p} \norm{g}_{L^q}
+\]
+whenver $1 < p,q < \infty$, $f,g \in \calS$, and $\frac{1}{r} = \frac{1}{p} + \frac{1}{q}$.
+\label{lem:hh}
+\end{lem}
+\begin{exr}
+Prove Lemma \ref{lem:hh}.
+\begin{enumerate}
+\item[(1)] Using a Littlewood-Paley decomposition $1 = \sum_j \psi_j^2$ and the fact that $\pi_{hh}(\psi_j(D)f , \psi_k(D) g)$ vanishes unless $j = k + O(1)$, show that
+\[
+|\pi_{hh}(f,g)|  \leq \sum_{j \sim k} |T_{m_{jk}}(\psi_j(D)f, \psi_k(D) g)|
+\]
+where $m_{jk}$ is a bump function adapted to $\{|\xi|, |\eta| \sim 2^j\}$.
+\item[(2)] With $C$ sufficiently large, write
+\[
+m_{jk}(\xi,\eta) = \sum_{n_1,n_2} c_{1,2} e^{2\pi i(n_1 \cdot \xi + n_2 \cdot \eta)/C2^j}
+\]
+on the support of $\psi_j(\xi) \psi_k(\eta)$, where the $c_{12}$ are rapidly decreasing, say
+\[
+c_{12} \lle (1 + |n_1| + |n_2|)^{-100d}.
+\]
+apply the triangle inequality to obtain
+\[
+|\pi_{hh}(f,g)|  \leq \sum_{j \sim k} \sum_{n_1,n_2} (1 + |n_1| + |n_2|)^{-100d}|\psi_j(D)f(x-n_1/C2^j)||\psi_k(D) g(x - n_2/C2^j)|.
+\]
+\item[(3)] Using the reproducing formula $\psi_j(D) f =\widetilde{\psi}_j(D) \psi_j(D) f$ for $\widetilde{\psi}_j$ adapted to some slightly larger ball together with the local constancy lemma, conclude that
+\[
+|\pi_{hh}(f,g)|  \leq \sum_{j \sim k} \sum_{n_1,n_2} (1 + |n_1| + |n_2|)^{-100d}(1+|n_1|)^d (1 + |n_2|^d )|M\psi_j(D)f||M\psi_k(D) g|.
+\]
+\item[(4)] Apply Cauchy-Schwartz and take $L^r$ norms followed by an application of H\"older. Finish using the Fefferman-Stein maximal inequality and the Littlewood-Paley inequality.
+\end{enumerate}
+\end{exr}
+\section*{Paradifferential calculus}
+
+As general guidelines, we present the following heuristics of the fractional product rule. We will make these rigorous shortly:
+
+\begin{itemize}
+\item (High-low interactions) If $f$ has significantly higher frequency than $g$ or is ``rougher'' than $f$, the $fg$ will has comparable frequency to $f$ and one expects $D^\alpha(fg) \simeq (D^\alpha f) g$. Similarly, one expects $P_N(fg) = (P_N f )g$.
+\item (Low-high interactions) Symmetric to the above.
+\item (High-high interactions) If $f$ and $g$ have comparable frequency, then $fg$ should have frequency comparable or lower than $f$ and $D^\alpha(fg) \simeq (D^\alpha f) g \simeq f (D^\alpha g)$.
+\item (Full Liebnitz rule) With no frequence assumptions on $f$ and $g$ we expect
+\[
+D^\alpha(fg) \simeq f (D^\alpha g) + (D^\alpha f) g.
+\]
+\end{itemize}
+Proving these principles rigorously requires some work. With these guidelines in mind, we start noting the commutation properties of multipliers with paraproducts.
+
+\begin{lem}[Kato-Ponce type commutator identities]. Let $s \in \bbR$ and let $D^s$ be an inhomogeneous symbol of order $s$.
+\begin{itemize}
+\item If $\pi_{lh}$ is a low-high paraproduct, then 
+\[
+D^s \pi_{lh}(f,g) = \pi_{lh}(f,D^s g) + \tilde{\pi}_{lh}(\nabla f, \brac{\nabla}^{s-1} g) = \pi'_{lh}(f, \brac{\nabla}^s g).
+\]
+\item If $\pi_{hh}$ is a high-high paraproduct, then
+\[
+\pi_{hh}(D^sf,g) = \pi_{hh}(f,D^sg) + \tilde{\pi}_{hh}(\nabla f, \brac{\nabla}^{s-1} g).
+\]
+\end{itemize}
+\end{lem}
+We will omit the proof of this lemma. This lemma together with Bony's paraproduct decomposition yields
+
+\begin{prop}[Fractional Liebnitz rule]
+Let $s \in \bbR$ and let $D^s$ be an inhomogeneous symbol of order $s$. Then
+\[
+D^s(fg) = (D^s f)g + f(D^s g) + T(f,g)
+\]
+where $T$ is a bilinear operator of the form
+\[
+T(f,g) = \pi(\brac{\nabla}^\theta f, \brac{\nabla}^{s-\theta} g) + \pi'(\brac{\nabla}^{s-\theta} f, \nabla^{\theta} g ).
+\]
+for any $0 < \theta < \min(s,1)$, where $\pi, pi'$ are linear combinations of Coifman-Meyer and residual paraproducts.
+\end{prop}
+This fractional Liebnitz rule yields some estimates on products in Sobolev spaces, one example being
+\begin{prop}
+Let $0 < s<1$ and let $1 < p,q,r < \infty$ be such that $\frac{1}{p} + \frac{1}{q} = \frac{1}{r}$ and let $D^s$ be a Fourier multiplier of order $s$. let $s_1 + s_2 = s$. Then
+\[
+\norm{D^s(fg) - (D^s f) g - f(D^s g)}_{L^r} \lle \norm{f}_{W^{s_1,p}} \norm{g}_{W^{s_2,q}}
+\]
+and
+\[
+\norm{fg}_{W^{r,s}} \lle \norm{f}_{W^{s,p}} \norm{g}_{L^q} + \norm{f}_{L^p} \norm{g}_{W^{s,q}}
+\]
+\end{prop}
+\begin{proof}
+The first claim follows from the Coifman-Meyer multiplier theorem and an analogy for residual paraproducts. The second claim is similar.
+\end{proof}
+\begin{rmk}
+Note that one can in fact establish these product estimates by a careful use of the Littlewood-Paley decomposition.
+\end{rmk}
+We now turn to the fractional chain rule. As above, we have a guiding principal which we will (more or less) make precise:
+
+\vspace{4mm}
+Let $u$ be a function on $\bbR^d$ and let $F: \bbR \to \bbR$ be a reasonable smooth function. Then we have the fractional chain rule
+\[
+D^\alpha(F(u)) \simeq F'(u) D^\alpha u,
+\]
+for any differential operator $D^\alpha$ of positive order $\alpha >0$. We also have the Littlewood-Paley variant
+\[
+P_N(F(u)) \simeq F'(P_{<N} u)P_N u.
+\]
+We now present the following somewhat crude estimate which will allow us to conclude some results which are in the spirit of a fractional chain rule.
+\begin{lem}
+Let $u$ be Schwartz and let $1 = \sum_j \psi_j$. If $F$ is a Lipschitz nonlinearity with $F(0) = 0)$ then we have the pointwise estimate
+\[
+|\psi_j(D) F(u)| \lle_d \sum_k \min(2^k,1)M(\psi_{j+k}(D) u)
+\]
+where $M$ is the Hardy-Littlewood maximal inequality. If $F$ is a power-type nonlinearity with exponent $p \geq 1$, then
+\[
+|\psi_j(D)F(u)| \lle_{p,d} \sum_k \min(2^k,1)[M(|u|^{p-1}) M( \psi_{j +k}(D) u) + M(|u|^{p-1} \psi_{j+k}(D)u)].
+\]
+\end{lem}
+\begin{cor}
+Let $u$ be Schwartz. If $F$ is a Lipschitz nonlinearity then
+\[
+\norm{F(u)}_{W^{s,q}} \lle_{s,q,d} \norm{u}_{W^{s,q}}
+\]
+for all $1 < q < \infty$ and $0 < s < 1$. If instead $F$ is a power-type nonlinearity with exponent $p$ then
+\[
+\norm{F(u)}_{W^{s,q}} \lle_{s,q,d} \norm{u}_{L^r}^{p-1}\norm{u}_{W^{s,t}}
+\]
+whenever $1 < q,r,t < \infty$ and $0 < s <1$ are such that $1/q = (p-1)/r + 1/t$.
+\end{cor}
+
+\newpage
+{\noindent\Large Oscillatory integrals \hfill}
+\vspace{6mm}
+\subsection*{Oscillatory integrals in one variable}
+Motivated by the Fourier transform and other integrals of a similar sort, we introduce here the study of oscillatory integrals, in particular, methods of determining their asymptotics. We will concern ourselves with integrals of the form
+\[
+I(\lambda) = \int e^{ i \lambda \phi(x)} \psi(x) dx
+\]
+and we wish to determine the asymptotic behaviour of $I(\lambda)$ as $\lambda$ tends to infinity. In our study, $\phi$ will be a real-valued, smooth function, called the phase and $\psi$ is a complex valued, smooth function, often with compact support. There are three basic principles in the study of oscillatory integrals: localization, scaling, and asymptotics.
+\subsection*{Localization}
+Assuming $\phi$ has compact support in $(a,b)$, the asymptotic behavious of $I(\lambda)$ is determined by those points where $\phi'(x) = 0$. This is evident from the following
+\begin{prop}
+Let $\phi$ and $\psi$ be smooth functions so that $\psi$ has compact support in $(a,b)$ and $\phi'(x) \neq 0$ for all $x \in [a,b]$. Then
+\[
+I(\lambda) = O(\lambda^{-N}),
+\]
+for all $N \geq 0$.
+\end{prop}
+\begin{exr}
+Prove the previous proposition. (Hint: use the relation 
+\[
+\frac{1}{i \lambda \phi'(x)} \frac{d}{dx} e^{i \lambda \phi(x)} = e^{i \lambda \phi(x)} 
+\]
+and integration by parts).
+\end{exr}
+Note that under the change of variables $x \mapsto \phi(x)$, the previous proposition is just the statement that compactly supported smooth functions have rapidly decreasing fourier transforms.
+\subsection*{Scaling}
+If we only know that
+\[
+\left| \frac{d^k \phi(x)}{dx^k} \right| \geq 1
+\]
+for some $k$ and we wish to estimate $I(\lambda)$ then the change of variables $x \mapsto \lambda^{-1/k} x'$ shows that the integral cannot have better decay than $O(\lambda^{-1/k})$. The following lemma which goes back to van der Corput tells us that this is exactly the decay achieved.
+\begin{lem}[van der Corput]
+Suppose $\phi$ is real-valued and smooth with $|\phi^{(k)}(x) \geq 1|$ for all $x \in (a,b)$. Then
+\[
+\left|\int_a^b e^{i \lambda \phi(x)} dx \right| \leq c_k \lambda^{-1/k}
+\]
+holds when
+\begin{enumerate}
+\item[(i)] $k \geq 2$, or
+\item[(ii)] $k = 1$ and $\phi'(x)$ is monotonic.
+\end{enumerate}
+\end{lem}
+\begin{exr}
+Prove van der Corput's lemma. (Hint: Start with $(ii)$ and integrate by parts. Then proceed by induction).
+\end{exr}
+Note that the hypothesis $\phi'$ is monotone is needed. Indeed , if $\phi$ has significant oscillation at wavelength $1/\lambda$ the lemma fails. Consider the phase function
+\[
+\phi(x) = 2 \pi x + \frac{1}{\lambda} f( \lambda x).
+\]
+for some one-periodic function $f$. Then one can choose $f$ so that $I(\lambda) \sim |J|$.
+\subsection*{Asymptotics}
+This principle refers to the full asyptotic expansion of $I(\lambda)$. From the principle of stationary phase, we already know that the behaviour of $I(\lambda)$ is determined by the points $x_0$ such that $\phi'(x_0) = 0$. Similarly, the asymptotic expansion will depend on the smallest $k \geq 2$ for which $\phi^{(k)}(x_0) \neq 0$.
+\begin{prop}
+Suppose $k \geq 2$ and
+\[
+\phi(x_0) = \ldots = \phi^{(k-1)}(x_0) = 0
+\]
+while $\phi^{(k)}(x_0) \neq 0$. If $\psi$ has support in a sufficiently small neighbourhood of $x_0$, then
+\[
+I(\lambda) \sim \lambda^{-1/k} \sum_{j=0}^\infty a_j \lambda^{-j/k}.
+\]
+\label{prop:asymp}
+\end{prop}
+\begin{exr}
+Prove Proposition \ref{prop:asymp}.
+\begin{enumerate}
+\item Begin with the case $k = 2$. Explain why it suffices to prove the result when $\phi(x) = x^2$. Indeed, we can assume $\phi$ does not vanish near zero and then use a diffeomorphism so that $\phi(x)$ is exactly $x^2$ in the neighbourhood of zero.
+\item Observe that
+\[
+\int_{-\infty}^\infty e^{i \lambda x^2} x^\ell e^{-x^2} dx \sim \lambda^{-(\ell +1)/2} \sum_{j=0}^\infty c_j^{(\ell)} \lambda^{-j},
+\]
+for any nonnegative integer $\ell$. To see this, set $z = (1 - i\lambda)^{1/2} \cdot x$, and proceed by contour integration taking $\lambda \to 0$ in the contour.
+\item When $\eta$ is smooth with compact support and $\ell$ is a nonegative integer,
+\[
+\left| \int_{-\infty}^\infty e^{i \lambda x^2} x^\ell \eta(x) dx \right| \lle \lambda^{-1/2 - \ell/2}
+\]
+Let $\alpha(x)$ be a smooth bump function adapted to $B(0,1)$ and write the left term above as 
+\[
+\int_{-\infty}^\infty e^{i \lambda x^2} x^\ell \,\alpha(x/\epsilon) \,\eta(x)  dx  + \int_{-\infty}^\infty e^{i \lambda x^2} x^\ell \,[1- \alpha(x/\epsilon)]\, \eta(x)  dx ,
+\]
+for $\epsilon > 0$ which we will fix later. Bound the first term naively by $\epsilon^{\ell + 1}$ and use a similar integration by parts trick the bound the second term by
+\[
+\lambda^{-N} \int_{|x| \geq \epsilon} |x|^{\ell - 2N} \sim_N \lambda^{-N} \epsilon^{\ell - 2N + 1},
+\]
+and make a judicious choice of $\epsilon$ to prove the claim. Similarly show
+\[
+\int e^{i \lambda x^2} g(x) dx  = O(\lambda^{-N})
+\]
+whenever $g \in \calS$ vanishes near the origin.
+\item We now prove the result for $\phi(x) = x^2$. Write
+\[
+\int e^{i \lambda x^2} \psi(x) = \int e^{i \lambda x^2} [e^{-x^2} \psi(x)] \tilde{\psi}(x) dx,
+\]
+where $\tilde{\psi}$ is smooth with compact support and $1$ on the support of $\psi$. Substitute the Taylor expansion of $e^{x^2} \psi(x)$ in the integral and use the previous steps to obtain the result.
+\item For $k > 2$, use the identity
+\[
+\int_0^\infty e^{i \lambda^k} e^{-x^k} x^\ell \sim_{k, \ell} (1-i \lambda)^{-(\ell + 1) / k}.
+\]
+and proceed as above.
+\end{enumerate}
+\end{exr}
+\begin{rmk}
+While the theory of oscillatory integrals is pretty much complete in one dimension, the theory encounters many difficulties in higher dimensions, mainly because the structure of stationary points is more complicated. One has an analogous principle of stationary phase in higher dimensions as well as an asymptotic expansion of $I(\lambda)$ (one deals with normal forms instead of quadratic potentials).
+\end{rmk}
+\newpage
+{\noindent\Large Strichartz Estimates}
+\vspace{6mm}
+
+It is of crucial importance in the study of nonlinear dispersive equations to be able to control the size of solutions to the linear problem in terms of the size of the inital datum. By size, here, one usually refers to an appropriate mixed space, for example, for the NLS one uses $L_t^q L_x^r$ or even $L_t^q W_x^{s,r}$.
+
+Consider the Schro\"odinger equation in $\bbR^d$ and recall that the propagator has the form $e^{it\Delta/2}$. First we deal with \emph{fixed time} estimates, for instance, for $t \neq 0$, we have the $L^2_x$ conservation law, and, since $e^{it\delta/2}$ commutes with Fourier multipliers, we also have conservation of the $H^s_x$ norm. We also have the \emph{dispersive inequality}:
+\[
+\norm{e^{it\Delta/2}u_0}_{L^\infty_x} \lle_d t^{-d/2} \norm{u_0}_{L^1_x}.
+\]
+We can interpolate this result to obtain
+\begin{align}
+\norm{e^{it\Delta/2}u_0}_{L^{p'}_x} \lle_d t^{-d(\frac{1}{p} - \frac{1}{2})} \norm{u_0}_{L^p_x}
+\label{eq:lpbds}
+\end{align}
+for all $1 \leq p \leq 2$. In particular, the Schr\"odinger flow does not preserve any $L^p_x$ norm other than the $L^2_x$ norm. By inserting fractional derivatives, we conclude
+\[
+\norm{e^{it\Delta/2}u_0}_{W^{s,p'}_x} \lle_d t^{-d(\frac{1}{p} - \frac{1}{2})} \norm{u_0}_{W^{s,p}_x}.
+\]
+Some use of Sobolev embedding may allow us to trade regularity for integrability on the left, but we've pretty much exhausted the available estimates. While these decay estimates are useful, sometimes the initial data is only assumed to lie in $H^s_x$, for example. Here, we combine these estimates with some duality arguments to obtain the very useful \emph{Strichartz estimates}.
+
+\begin{defn}
+Let $d \geq 1$. We call a pair of exponents admissible if $2 \leq q,r\leq \infty$, with
+\[
+\frac{2}{q} + \frac{d}{r} = \frac{d}{2},
+\]
+and $(q,r,d) \neq (2, \infty,2)$.
+\end{defn}
+\begin{thm}
+Fix $d \geq 1$ and $\bar h = m = 1$. Then for any admissible exponents $(q,r)$ and $(\tilde{q},\tilde{r})$ we have the homogeneous Strichartz estimate
+\[
+\norm{e^{it\Delta/2} u_0}_{L^q_t L^r_x} \lle_{d,q,r} \norm{u_0}_{L^2_x},
+\]
+the dual homogeneous Strichartz estimate
+\[
+\norm{\int e^{-is\Delta/2} F(s)ds }_{L^2_x} \lle_{d,\tilde{q},\tilde{r}} \norm{F}_{L_t^{\tilde{q}'}L_x^{\tilde{r}'}}
+\]
+and the inhomogeneous estimate
+\[
+\norm{\int_{t'<t} e^{-is\Delta/2} F(t') ds}_{L^q_t L^r_x} \lle_{d,q,r,\tilde{q},\tilde{r}} \norm{F}_{L_t^{\tilde{q}'}L_x^{\tilde{r}'}}
+\]
+\end{thm}
+\begin{rmks}
+Because the Schr\"odinger evolution commutes with Fourier multipliers such as $|\nabla|^s$ or $\brac{\nabla}^s$ it is easy to convert the above statements into ones at regularities $H^s$. In particular, let $u : I \times \bbR^d \to \bbC$ be a solutions to an inhomogeneous Schr\"odinger equation
+\[
+i \partial_t u + \frac{1}{2} \Delta u = F, \quad u(0) = u_0 \in H^s_x,
+\]
+given by Duhamel's formula
+\[
+u(t) = e^{it \Delta/2} u_0 + \int_0^t e^{i(t-s)\Delta/2} F(s) ds.
+\]
+The applying $\brac{\nabla}^s$ to both sides and using the above theorem, we obtain
+\[
+\norm{u}_{L^q_t W^{s,r}_x} \lle \norm{u_0}_{H^s_x} + \norm{F}_{L^{\tilde{q}'}_t W^{s,\tilde{r}'}_x}
+\]
+for admissible $(q,r)$, etc. (with appropriate care taken in handling the endpoints where the definition of the Sobolev space is not immediately obvious). Similarly, we have homogeneous estimates and once again Sobolev embedding (when I is bounded) lets us exchange regularity for integrability.
+\end{rmks}
+We first state a lemma which will be useful to establishing the inhomogeneous estimates:
+\begin{lem}[Christ-Kiselev lemma]
+Let $X,Y$ be Banach spaces and $K$ an operator values kernel, taking values in $B(X \to Y)$. Suppose that $1 \leq p < q \leq \infty$ are such that
+\[
+\norm{\int K(t,s) f(s)ds}_{L_t^q} \leq A \norm{f}_{L^p_t},
+\]
+for alla $f$ and some $A > 0$. Then one has
+\[
+\norm{\int_{s <t}K(t,s) f(s) ds}_{L_t^q} \lle_{p,q} A \norm{f}_{L^p_t}.
+\]
+\end{lem}
+The idea of this lemma is that if one knows an operator to be bounded, the any reasonable localization of this operator should be bounded as well. We now turn to the proof of the non-endpoint Strichartz estimates. The proof of the endpoint case is more delicate, and can be seen in the paper of Keel and Tao.
+\begin{proof}
+We argue using the $TT*$ method. Let $(q,r)$ be admisssible. Applying Minkowski, \eqref{eq:lpbds}, and the Hardy-Littlewood Sobolev theorem of fractional integration, we have
+\begin{align*}
+\norm{\int e^{-is\Delta/2} F(s) ds}_{L^q_t L^r_x} &\lle \norm{ \int \norm{e^{-is\Delta/2} F(s)}_{L^r_x} ds }_{L^q_t}\\
+& \lle_{d,r} \norm{\norm{F}_{L^{r'}_x} * \frac{1}{|t|^{d(\frac{1}{p} - \frac{1}{3})}}}_{L_t^q} \\
+& \lle_{d,q,r} \norm{F}_{L_t^{q'} L_x^{r'}},
+\end{align*}
+for $2 < r \leq \infty$ and $2 < q \leq \infty$ are such that $\frac{2}{q} + \frac{d}{r} = \frac{d}{2}$ and any $F \in \calS$. By H\"older's we have
+\[
+| \int \int \brac{\int e^{i(t-s)\Delta/2} F(s), F(t)} ds dt | \lle_{d,q,r} \norm{F}^2_{L_t^{q'} L_x^{r'}}.
+\]
+and factorizing the right, we obtain the dual homogeneous estimate, yielding the homogeneous estimate by duality. Composing the estimates, we have
+\[
+\norm{\int e^{-is\Delta/2} F(s)ds }_{L^q_tL^r_x} \lle_{d,q,r, \tilde{q},\tilde{r}} \norm{F}_{L^{\tilde{q}'}_t L^{\tilde{r}'}_x}
+\]
+and the inhomogeneous case follows from Christ-Kiselev.
+\end{proof}
+\begin{rmk}
+Locally, Strichartz estimates describe a smoothing effect reflected in a gain of integrability (the datum states in $L^2_x$ and the solution $u(t) \in L^r$ for $r > 2$), and only with the time average. Globally, the describe a decay effect that the $L^r_x$ norm decays to zero, again in an $L_t^q$ time averaged sense
+\end{rmk}
+
+There is an interpretation of the Strichartz estimates which relates to the uncertainty principle. Let $u$ be a solution to the homogeneous Schr\"odinger equation with $L_x^2$ norm $O(1)$ with frequency $\sim N$. Then the uncertainty principle states that the most that $u(t)$ can concentrate in physical sace in in a ball of radius $\sim 1/N$ and by the $L^2$ normalization, it can be as large as $N^{d/2}$ there. However, the Strichartz estimates show that such concentration can only persist for a set of times of measure $\sim 1/N^2$.
+\newpage
+{\noindent\Large Probabilistic interpretations in harmonic analysis}
+
+\subsection*{Maximal operators as martingales}
+Consider the dyadic maximal function
+\[
+M_\Delta f(x):= \sup_Q \frac{1}{|Q|} \int_Q |f|,
+\]
+where $Q$ ranges over the dyadic cubes containing $x$, then as with the usual maximal function, we can prove the dyadic Hardy-Littlewood maximal inequality:
+\[
+\norm{M_\Delta f}_{L^p} \lle_p \norm{f}_{L^p}
+\]
+for $1 < p \leq \infty$.
+
+Recall that dyadic cubes have the property that two cubes are either disjoint, or one completely contains the other. It is largely due to this property that we have another expression for the dyadic maximal function. Indeed, let $\calB_n$ be the $\sigma$-algebra generated by the dyadic cubes of generation $n$, then
+\[
+\bbE(f | \calB_n)(x) = \frac{1}{|Q|} \int_Q f(y) dy
+\]
+where $Q$ is the unique dyadic cube of generation $n$ containing $x$.
+\begin{claim}
+Let $f \in L^1$ and Let $X_n:=\bbE(|f| |\calB_n)$. Then $\{X_n\}$ is a $\{\calB_n\}$-martingale.
+\end{claim}
+\begin{proof}
+We first note that $X_n$ is $\calB_n$ measurable and
+\[
+\bbE(|X_n|) = \int |f| < \infty.
+\]
+Finally, we check the martingale property. Let $m < n$, then
+\[
+\bbE(X_n | \calB_m) = \bbE(\bbE(f | \calB_n) | \calB_m) = \bbE(f | \calB_m) = X_m. \qedhere
+\]
+\end{proof}
+Now we see that that the weak $L^1$ inequality for the Hardy-Littlewood maximal function is a simple consequence Doob's maximal inequality:
+\begin{thm}[Doob's maximal inequality]
+Let $(X_n)_{n \geq 0}$ be a submartingale. Then
+\[
+\sup_{\lambda > 0} \lambda \bbP\left( \sup_{[0,n]} |X_m| \geq \lambda\right) \leq \bbE\left(|X_n| ,\,\, \sup_{[0,n]} |X_m| \geq \lambda\right).
+\]
+\end{thm}
+\begin{proof}
+Let $A_0 = \{X_0 \geq \alpha\}$ and let
+\[
+A_n = \left\{ X_n \geq \alpha \textup{ but } \max_{[0,n)} X_m  < \alpha \right\}.
+\]
+Then
+\[
+\bbP\left( \sup_{[0,n]} |X_m| \geq \lambda\right)  \leq \sum_{n=0}^N \bbP(A_n).
+\]
+applying Chebyshev and resumming yields the result.
+\end{proof}
+\begin{thm}[Hardy-Littlewood Maximal inequality]
+The Hardy-Littlewood maximal operator is weak-$(1,1)$.
+\end{thm}
+\begin{proof}
+Let $X_n := \bbE(|f| | \calF_n)$. Then 
+\[
+X_n = \sum_{Q \in \calF_n} \left( \frac{1}{|Q|} \int |f| \right) \textbf{1}_Q
+\]
+and $X_n$ is a martingale. Indeed, integrability and measurability are immediate and we can quickly check that for $m < n$,
+\[
+\bbE(X_n | \calF_m ) = \bbE( \bbE(|f| | \calF_n) | \calF_m ) = \norm{f}_1.
+\]
+Letting $E_\lambda = \{\sup_{|m| \leq N} |X_m| \geq \lambda\}$, then
+\[
+|E_\lambda| \leq \frac{1}{\lambda} \int_{E_\lambda} |f(y)| dy
+\]
+By monotone convergence, we can take $n \to \infty$ on the left to obtain the relation
+\[
+|\{\bbE(|f| | \calF_\infty) \geq \lambda \}| \leq \frac{1}{\lambda} \int_{\{\bbE(|f| | \calF_\infty) \geq \lambda \}} |f(y) dy \lle_\alpha \norm{f}_1.
+\]
+We can now use the fact that the various forms of maximal operators are comparable to conclude the result.
+\end{proof}
+Now we recall Doob's $L^P$ inequality:
+\begin{thm}[Doob's $L^p$-inequality]\index{Doob's $L^p$-inequality}
+Let $X$ be a non-negative submartingale and suppose that $X_n \in L^p$ for all $n \geq 1$ and some $p >1$. Then
+\[
+\bbE\left[\left(\sup_n X_n\right)^p \right] \leq \left(\frac{p}{p-1}\right)^p \sup_n \bbE[X_n^p].
+\]
+\end{thm}
+We can now use similar techniques to those above to conclude
+\begin{thm}
+The Hardy-Littlewood maximal operator is strong $(p,p)$ for all $1 < p \leq \infty$.
+\end{thm}
+
+\subsection*{BMO-martingales}
+We work out the following exercise from [RY].
+\begin{exr}
+Let $Y$ be a continuous uniformly integrable martingale. For $1 \leq p < \infty$ the following are equivalent
+\begin{enumerate}
+\item[(i)] There is a constant $C$ such that for any stopping time $T$
+\[
+\bbE[|Y_\infty - Y_T|^p | \calF_T] \leq C^p
+\]
+almost surely,
+\item[(ii)] There is a constant $C$ such that for any stopping time $T$
+\[
+\bbE[|Y_\infty - Y_T|^p] \leq C^p \, \bbP\{T < \infty\}.
+\]
+\end{enumerate}
+\begin{proof}
+Let $T$ be a stopping time and $A \in \calF$. Define
+\[
+T_A = \begin{cases}
+T & \textup{on }A \\
+\infty & \textup{on }A^c,
+\end{cases}
+\]
+then $T_A$ is a stopping time if and only if $A \in \calF_T$. Let
+\[
+A = \{\bbE[|Y_\infty - Y_T|^p | \calF_T] > C^p \},
+\]
+then if $\bbP\{T_A < \infty\} > 0$, we have
+\begin{align*}
+C^p \bbP\{T_A < \infty\} \geq \bbE[|Y_\infty - Y_T|^p \textbf{1}_{\{T_A < \infty\}}] = \bbE[\bbE[|Y_\infty - Y_T|^p | \calF_T] \textbf{1}_{\{T_A < \infty\}}] > C^p  \bbP\{T_A < \infty\},
+\end{align*}
+which is a contradiction. Conversely
+\[
+\bbE[|Y_\infty - Y_T|^p] = \bbE[ \bbE[|Y_\infty - Y_T|^p | \calF_T] \textbf{1}_{\{T < \infty\}}],
+\]
+which yields the desired result.
+\end{proof}
+\end{exr}
+\begin{exr}(John-Nirenberg inequality) Let $Y \in \mathcal{BMO}$ and $\norm{Y}_{\mathcal{BMO}_1} \leq 1$. Let $a > 1$ and $T$ be a stopping time and define inductively
+\[
+R_0 = T, \quad R_n = \inf\{t > R_{n-1} : |Y_t - Y_{R_{n-1}}| > a\}.
+\]
+Then $\bbP\{R_n < \infty\} \geq a \bbP\{R_{n+1} < \infty\}$ and there is a contant $C$ such that for any $T$
+\[
+\bbP \left[ \sup_{t \geq T} |Y_t - Y_T| > \lambda \right] \leq C e^{-\lambda/e} \bbP\{T < \infty\}.
+\]
+In particular, if we set $Y^* = \sup_t|Y_t|$, we obtain
+\[
+\bbP[Y^* \geq \lambda] \leq C e^{-\lambda /e}
+\]
+\begin{proof}
+First, note that for $S \geq T$ stopping times,
+\[
+\bbE|Y_S - Y_T| \leq \norm{Y}_{\mathcal{BMO}_1} \bbP\{T < \infty\}.
+\]
+Indeed, using optional stopping with $Z_t = Y_t - Y_{t \wedge T}$ we have the result by definition of the $\mathcal{BMO}$ norm. Using this with $R_{n} = T$ and $R_{n+1} = S$ we have
+\[
+\bbP\{R_{n} < \infty\} \geq \bbE|Y_{R_{n+1}} - Y_{R_{n}}| > a \bbP \{R_{n+1} < \infty\}.
+\]
+Thus, we can iterate this to find
+\[
+\bbP \{R_k < \infty\} < \left(\frac{1}{a}\right)^k \bbP \{R_{0} < \infty\}.
+\]
+Hence let $a(n+1) > \lambda \geq an$, then
+\[
+\bbP \left[ \sup_{t \geq T} |Y_t - Y_T| > \lambda \right] \leq \bbP \left[ \sup_{t \geq T} |Y_t - Y_T| > an \right] \leq \bbP \{R_{n} < \infty\} = \left(\frac{1}{a}\right)^{\lambda/a} \bbP \{R_{0} < \infty\}.
+\]
+Maximizing over $\lambda$ and recalling our definition of $R_0$, we have the result. The second claim follows from taking $T = 0$. Finally, this implies, in particular, that $Y^*$ satisfies the same bounds and that $Y^* \in L^p$ for all $p$.
+\end{proof}
+\end{exr}
+\begin{rmk}
+The preceding theorem demonstrates tha in fact, $\mathcal{BMO}_p$ is the same for all $p$ and that all the seminorms are equivalent.
+\end{rmk}
+
+\vspace{4mm}
+\noindent Now we turn to $\calH^p$ spaces. First, we define the norm
+\[
+\norm{X}_{H^p} = \norm{X^*}_{L^p}
+\]
+where $X^* = \sup_t X_t$.
+\begin{defn}
+An atom is a continuous martingale $A$ for which there is a stopping time $T$ such that $A_t = 0$ for $t \leq T$ and $|A_t| \leq \bbP\{T < \infty\}^{-1}$ for every $t$.
+\end{defn}
+\begin{exr}
+Let $X \in \mathcal{H}^1$ and suppose $X_0 = 0$. For $p \in \bbZ$ define
+\[
+T_p = \inf \{t : |X_t| > 2^p \}
+\]
+and $C_p = 3 \cdot 2^p\,\bbP \{T_p < \infty\}$. Then
+\[
+A^p := \frac{(X^{T_{p+1}} - X^{T_p})}{C_p}
+\]
+is an atom for each $p$ and $X = \sum_{- \infty}^\infty C_p A^p$ is in $\mathcal{H}^1$. Moreover, $\sum|C_p| \leq 6 \norm{X}_{\mathcal{H}^1}$.
+\begin{proof}
+First, we note that for $t \leq T_{p+1}$ we have that $A_p = 0$ and
+\[
+|X^{T_{p+1}} - X^{T_p}| \leq |2^{p+1} - (-2)^{p}| = 3 \cdot 2^p,
+\]
+which immediately gives the result for $C_p$ as above. Now we consider
+\[
+X_t - \sum_{- N}^N C_p A^p = X_t - X^{T_{N+1}} + X^{T_{-N}}.
+\]
+We find that
+\[
+\bbE |\sup_t X_t - X^{T_{N+1}}| \leq 2 \bbE[|X^*| \textbf{1}_{\{X^* \geq 2^{N+1}\}}] \to 0.
+\]
+Similarly,
+\[
+\bbE |\sup_t X_{t \wedge T_{-N}}| \leq 2^{-N} \to 0.
+\]
+Finally, we compute
+\[
+\sum |C^p| = \sum 3 \cdot 2^p\,\bbP \{T_p < \infty\} = 6 \sum 2^{p-1} \bbP \{X^* \geq 2^p \} = 6 \norm{X^*}. \qedhere
+\]
+\end{proof}
+\begin{prop}
+Let $Y$ be a uniformly integrable continuous martingale. Then
+\[
+\frac{1}{2}  \norm{Y}_{\mathcal{BMO}_1} \leq \sup\{ |\bbE[A_\infty Y_\infty] : A \textup{ atom }\} \leq \norm{Y}_{\mathcal{BMO}_1}
+\]
+\end{prop}
+\begin{proof}
+First left's try the inequality on the right. Let $T$ be a stopping time as in the definition of an atom, and we compute
+\[
+\bbE(A_\infty Y_T) = \bbE [Y_T \bbE(A_\infty |\calF_T)] = \bbE(A_T Y_T) = 0,
+\]
+hence
+\[
+\bbE(A_\infty Y_\infty) = \bbE[A_\infty(Y_\infty - Y_T)] \leq \bbP\{T < \infty\}^{-1}\bbE[|Y_\infty - Y_T|] \leq \norm{Y}_{\mathcal{BMO}_1}.
+\]
+For the converse let $T$ be an arbitrary stopping time. We set
+\[
+X_\infty = \textup{sgn}(Y_\infty - Y_T)
+\]
+and let $X_t = \bbE(A_\infty |\calF_t)$. Setting $A_t = X_t - X_{t \wedge T}/2 \bbP\{T < \infty\}$. We can check that this $A_t$ does the job.
+\end{proof}
+Now we can prove that $(\mathcal{H}^1)^* = \mathcal{BMO}$. To prove $\mathcal{BMO} \subseteq (\mathcal{H}^1)^*$, we need Fefferman's inequality, which states that for $X,Y \in \calH^2$,
+\[
+|\bbE[X_\infty Y_\infty]| \leq 6 \norm{X}_{\mathcal{H}^1} \norm{Y}_{\mathcal{BMO}}
+\]
+\begin{proof}
+First note that $X \in \mathcal{BMO}$ hence by one of the previous statements, we can write $X = \sum C_p A^p$.  Since $X \in \calH^2$, we apply dominated convergence theorem to obtain
+\[
+\bbE[X_\infty Y_\infty] = \sum C^p \bbE[A_\infty^p Y_\infty].
+\]
+and the result follows by a previous proposition.
+
+To conclude, let's start with $\varphi$, a linear functional on $\calH^2$. Then since $\calH^2$ is a Hilbert space, we can find  $Y \in \calH^2$ so that
+\[
+\varphi(X) = \bbE[X_\infty Y_\infty]
+\]
+for all $X \in \calH^2$. By the previous inquality, we see that $Y \in \mathcal{BMO}$. We can then argue by density to see that this holds for $\varphi \in (\mathcal{H}^1)^*$. Conversely, Fefferman's inequality tells us that for every $Y \in \mathcal{BMO}$, the linear functional $\varphi_y(X) = \bbE[X_\infty Y_\infty]$ is bounded, in particular, $\mathcal{BMO} \subset (\mathcal{H}^1)^*$.
+\end{proof}
+\end{exr}
+\begin{rmk}
+To conclude the classical result from this probabilistic approach, one identifies BMO as a subset of $\mathcal{BMO}$ and notes that $H^1$ can be mapped one-to-one into $\mathcal{H}^1$, call this map $M$. Finally, one shows that one can map $\mathcal{BMO}$ one-to-one and onto $M(H^1)^*$
+\end{rmk}
+
+\end{document}
